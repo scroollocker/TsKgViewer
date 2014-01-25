@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,9 +78,9 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     						Toast.LENGTH_LONG).show();
     				return super.onOptionsItemSelected(item);
     			}
-    			LastSeenNewActivity.tsEngine = tsEngine;
+    			LastSeenActivity.tsEngine = tsEngine;
 				backPressed = 0;
-				Intent intent = new Intent(MenuActivity.this, LastSeenNewActivity.class);
+				Intent intent = new Intent(MenuActivity.this, LastSeenActivity.class);
 				startActivity(intent);
 				return super.onOptionsItemSelected(item);
     		}    
@@ -174,9 +173,9 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 						Toast.LENGTH_LONG).show();
 			}
 			else {
-				NewEpiReActivity.tsEngine = tsEngine;
+				NewEpiActivity.tsEngine = tsEngine;
 				backPressed = 0;
-				Intent intent = new Intent(MenuActivity.this, NewEpiReActivity.class);
+				Intent intent = new Intent(MenuActivity.this, NewEpiActivity.class);
 				startActivity(intent);								
 			}
 		}

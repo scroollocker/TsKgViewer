@@ -1,15 +1,10 @@
 package ru.skytechdev.tskgviewerreborn;
 
-import java.io.File;
 import java.util.ArrayList;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class TSEngine {
 		private Menu mainMenu = new Menu();
@@ -19,7 +14,6 @@ public class TSEngine {
 		private LastSeen lastSeen = new LastSeen();
 		private Search searchEngine = new Search();
 		private Favorites favorites = new Favorites();
-		//private VideoUrlGenerator urlGen = new VideoUrlGenerator();
 		private int seasonId;
 		private int serialnId;
 		private boolean isSelected;
@@ -204,7 +198,6 @@ public class TSEngine {
 				isSerialSelect = serialInfo.parseSerialInfo(url);
 				if (isSerialSelect) {					
 					addToLastSeen(serialInfo.getCaption(),url,serialInfo.getImg());
-					//urlGen.init(url,isDirectLink());
 				}
 			}				
 		}
@@ -340,7 +333,7 @@ public class TSEngine {
 			if (url.isEmpty()) {
 				return "";
 			}
-			return url;//urlGen.makeVideoUrl(url);
+			return url;
 		}
 		
 		

@@ -9,8 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class LastSeen {
 		
@@ -74,22 +72,6 @@ public class LastSeen {
 		} catch (IOException e) {
 
 		}
-		/*
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-	    SharedPreferences.Editor editor = sp.edit();
-	    int itemCount = seenList.size();
-	    editor.putInt("ls_ItemCount", itemCount);
-	    for (int i = 0; i < itemCount; i++) {
-	    	TSItem item = seenList.get(i);
-	    	editor.remove("ls_Caption_"+i);
-	    	editor.remove("ls_Url_"+i);
-	    	editor.remove("ls_Img_"+i);
-	    	editor.putString("ls_Caption_"+i, item.value);
-	    	editor.putString("ls_Url_"+i, item.url);
-	    	editor.putString("ls_Img_"+i, item.imgurl);
-	    }
-	    editor.commit();
-	    */	    
 	}
 	
 	public int getCount() {

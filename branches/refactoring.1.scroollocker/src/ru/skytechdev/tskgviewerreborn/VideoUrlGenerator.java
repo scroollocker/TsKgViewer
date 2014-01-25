@@ -73,33 +73,7 @@ public class VideoUrlGenerator {
 		return result;
 		
 	}
-	/*
-	private void setSerialServerPrefix() {
-		String epiId = "http://www.ts.kg/js/episode/1";
-		
-		String server = "data2";
-		
-		Document doc = HttpWrapper.getHttpDoc(epiId);
-		if (doc != null) {
-			String temp;
-			String body = doc.text();
-			int posS = -1;
-			int posE = -1;
-			posS = body.indexOf("server: \"");
-			if (posS != -1) {
-				posS += 9;
-				posE = body.indexOf("\",", posS);
-				if (posE != -1) {
-					temp = body.substring(posS, posE);
-					if (!temp.isEmpty()) {
-						server = temp;
-					}
-				}
-			}
-		}
-		//currentServer = server;		
-	}
-	*/
+	
 	public String makeVideoUrl(String url) {
 		if (url.isEmpty()) {
 			return "";

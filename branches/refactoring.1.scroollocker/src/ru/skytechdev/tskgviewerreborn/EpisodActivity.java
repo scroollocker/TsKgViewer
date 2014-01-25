@@ -1,6 +1,5 @@
 package ru.skytechdev.tskgviewerreborn;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
