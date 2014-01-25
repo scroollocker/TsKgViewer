@@ -83,11 +83,11 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 					
-			items = new TSItemBitmap[tsEngine.getFavoritesGetCount()];	
+			items = new TSItemBitmap[tsEngine.getFavoritesCount()];	
 			
 			TSItem item;
 			Bitmap btm;
-			for (int i = 0; i < tsEngine.getFavoritesGetCount(); i++) {
+			for (int i = 0; i < tsEngine.getFavoritesCount(); i++) {
 				item = tsEngine.getFavoritesItem(i);
 				btm = (new ImageManager(tsEngine.getBaseContext()).getBitmap(item.imgurl));
 				items[i] = new TSItemBitmap(item,btm);

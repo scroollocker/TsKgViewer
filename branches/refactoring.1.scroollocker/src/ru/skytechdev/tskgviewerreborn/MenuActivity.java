@@ -85,7 +85,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 				return super.onOptionsItemSelected(item);
     		}    
     		case R.id.favorites : {
-    			if (tsEngine.getFavoritesGetCount() == 0) {
+    			if (tsEngine.getFavoritesCount() == 0) {
     				Toast.makeText(getBaseContext(),
     						"Список пуст",
     						Toast.LENGTH_LONG).show();
