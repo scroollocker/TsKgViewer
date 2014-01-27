@@ -8,9 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -60,7 +58,6 @@ public class VideoActivity extends Activity {
 			progress.dismiss();
 			currTryCount = 0;
 			video.start();
-			currTryCount = 0;
 		}
 	};
 	

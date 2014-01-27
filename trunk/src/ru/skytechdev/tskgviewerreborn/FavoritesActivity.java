@@ -32,18 +32,6 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 	@Override 
 	public void onStart() {
 		super.onStart();
-		/*ListView favList = (ListView)findViewById(R.id.listView1);		
-		
-		TSItem favElements[];
-		favElements = new TSItem[tsEngine.getFavoritesGetCount()];
-		for (int i = 0; i < tsEngine.getFavoritesGetCount(); i++) {
-			favElements[i] = tsEngine.getFavoritesItem(i);
-		}
-		
-		TSFavoritesAdapter favAdapter = new TSFavoritesAdapter(FavoritesActivity.this,favElements);
-		
-		favList.setAdapter(favAdapter);	
-		*/
 		
 		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Пожалуйста ждите...",
 				  "Получение данных.... ", true, false);
@@ -95,11 +83,11 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 					
-			items = new TSItemBitmap[tsEngine.getFavoritesGetCount()];	
+			items = new TSItemBitmap[tsEngine.getFavoritesCount()];	
 			
 			TSItem item;
 			Bitmap btm;
-			for (int i = 0; i < tsEngine.getFavoritesGetCount(); i++) {
+			for (int i = 0; i < tsEngine.getFavoritesCount(); i++) {
 				item = tsEngine.getFavoritesItem(i);
 				btm = (new ImageManager(tsEngine.getBaseContext()).getBitmap(item.imgurl));
 				items[i] = new TSItemBitmap(item,btm);

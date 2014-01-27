@@ -10,8 +10,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class Favorites {
 	private ArrayList<TSItem> favList = new ArrayList<TSItem>();
@@ -74,22 +72,6 @@ public class Favorites {
 		} catch (IOException e) {
 
 		}
-		/*
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-	    SharedPreferences.Editor editor = sp.edit();
-	    int itemCount = favList.size();
-	    editor.putInt("fl_ItemCount", itemCount);
-	    for (int i = 0; i < itemCount; i++) {
-	    	TSItem item = favList.get(i);
-	    	editor.remove("fl_Caption_"+i);
-	    	editor.remove("fl_Url_"+i);
-	    	editor.remove("fl_Img_"+i);
-	    	editor.putString("fl_Caption_"+i, item.value);
-	    	editor.putString("fl_Url_"+i, item.url);
-	    	editor.putString("fl_Img_"+i, item.imgurl);
-	    }
-	    editor.commit();
-	    */
 	}	
 	
 	public int getCount() {

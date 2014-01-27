@@ -1,7 +1,5 @@
 package ru.skytechdev.tskgviewerreborn;
 
-import java.util.ArrayList;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,7 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class LastSeenNewActivity extends Activity implements OnItemClickListener {
+public class LastSeenActivity extends Activity implements OnItemClickListener {
 	private ProgressDialog ProgressBar;
 	public static TSEngine tsEngine = null;
 	
@@ -29,23 +27,12 @@ public class LastSeenNewActivity extends Activity implements OnItemClickListener
 	public void onStart() {
 		super.onStart();
 		ListView lastSeenList = (ListView)findViewById(R.id.listView1);
-		lastSeenList.setOnItemClickListener(this);		
+		lastSeenList.setOnItemClickListener(this);				
 		
-		
-		ProgressBar = ProgressDialog.show(LastSeenNewActivity.this, "Пожалуйста ждите...",
+		ProgressBar = ProgressDialog.show(LastSeenActivity.this, "Пожалуйста ждите...",
 				  "Получение данных.... ", true, false);
-		new AsyncImageLoader().execute();
 		
-		/*TSItem seenElements[];
-		seenElements = new TSItem[tsEngine.getLastSeenCount()];
-		for (int i = 0; i < tsEngine.getLastSeenCount(); i++) {
-			seenElements[i] = tsEngine.getLastSeenItem(i);
-		}
-		
-		TSLastSeenAdapter lSeenAdapter = new TSLastSeenAdapter(LastSeenNewActivity.this,seenElements);
-		
-		lastSeenList.setAdapter(lSeenAdapter);	
-		*/		
+		new AsyncImageLoader().execute();	
 	}
 
 	@Override
@@ -55,7 +42,7 @@ public class LastSeenNewActivity extends Activity implements OnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(LastSeenNewActivity.this, "Пожалуйста ждите...",
+		ProgressBar = ProgressDialog.show(LastSeenActivity.this, "Пожалуйста ждите...",
 				  "Получение данных.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
@@ -86,7 +73,7 @@ public class LastSeenNewActivity extends Activity implements OnItemClickListener
 			}
 			else {
 				SerialActivity.tsEngine = tsEngine;
-				Intent intent = new Intent(LastSeenNewActivity.this, SerialActivity.class);
+				Intent intent = new Intent(LastSeenActivity.this, SerialActivity.class);
 				startActivity(intent);								
 			}
 		}
@@ -119,7 +106,7 @@ public class LastSeenNewActivity extends Activity implements OnItemClickListener
 			}
 			ListView lastSeenList = (ListView)findViewById(R.id.listView1);
 			
-			TSLastSeenAdapter lSeenAdapter = new TSLastSeenAdapter(LastSeenNewActivity.this,items);
+			TSLastSeenAdapter lSeenAdapter = new TSLastSeenAdapter(LastSeenActivity.this,items);
 			
 			lastSeenList.setAdapter(lSeenAdapter);
 		}

@@ -49,7 +49,6 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
 		ProgressBar = ProgressDialog.show(SerialListActivity.this, "Пожалуйста ждите...",
 				  "Получение данных.... ", true, false);		
 		new AsyncExecution().execute(arg2);

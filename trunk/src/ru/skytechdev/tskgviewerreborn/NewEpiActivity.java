@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class NewEpiReActivity extends Activity implements OnItemClickListener {
+public class NewEpiActivity extends Activity implements OnItemClickListener {
 	public static TSEngine tsEngine = null;	
 	private ProgressDialog ProgressBar;	
 	
@@ -29,7 +29,7 @@ public class NewEpiReActivity extends Activity implements OnItemClickListener {
 			items[i] = tsEngine.getNewEpiItem(i);
 		}
 		
-		TSNewEpiAdapter adapter = new TSNewEpiAdapter(NewEpiReActivity.this,items);
+		TSNewEpiAdapter adapter = new TSNewEpiAdapter(NewEpiActivity.this,items);
 		epiList.setAdapter(adapter);
 	}
 
@@ -40,7 +40,7 @@ public class NewEpiReActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(NewEpiReActivity.this, "Пожалуйста ждите...",
+		ProgressBar = ProgressDialog.show(NewEpiActivity.this, "Пожалуйста ждите...",
 				  "Получение данных.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
@@ -79,7 +79,7 @@ public class NewEpiReActivity extends Activity implements OnItemClickListener {
 				if (tsEngine.isDefaultPlayer()) {
 					VideoActivity.playlist.clear();
 					VideoActivity.playlist.add(newEpiUrl);
-					Intent intent = new Intent(NewEpiReActivity.this, VideoActivity.class);
+					Intent intent = new Intent(NewEpiActivity.this, VideoActivity.class);
 					startActivity(intent);
 					
 				}
@@ -92,7 +92,7 @@ public class NewEpiReActivity extends Activity implements OnItemClickListener {
 			else {
 				
 				SerialActivity.tsEngine = tsEngine;
-				Intent intent = new Intent(NewEpiReActivity.this, SerialActivity.class);
+				Intent intent = new Intent(NewEpiActivity.this, SerialActivity.class);
 				startActivity(intent);								
 			}
 		}

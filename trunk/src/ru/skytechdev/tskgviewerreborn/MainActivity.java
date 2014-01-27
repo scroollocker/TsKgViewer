@@ -42,7 +42,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		protected Boolean doInBackground(Void... arg0) {
 			boolean result = false;
 			tsEngine.init(getBaseContext());			
-			result = tsEngine.getIsMenuLoaded();			
+			result = tsEngine.isMenuLoaded();			
 			return result;
 		}
     	
