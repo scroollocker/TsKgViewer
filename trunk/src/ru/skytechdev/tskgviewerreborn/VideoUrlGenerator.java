@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 
 public class VideoUrlGenerator {
 	
@@ -17,20 +17,16 @@ public class VideoUrlGenerator {
 			return result;
 		}
 		
-		Elements scripts = doc.select("script");
+		Element dlButton = doc.select("a#dl_button").first();
 		
-		for (int i = 0; i < scripts.size(); i++ ) {
-			if (scripts.get(i).hasAttr("src")) {
-				String src = scripts.get(i).attr("src");
-				if (src.indexOf("episode3") != -1) {
-					result = src.substring(29);
-					break;
-				}
+		if (dlButton != null) {
+			if (dlButton.hasAttr("href")) {
+				String [] urlSplit = dlButton.attr("href").split("/");
+				result = urlSplit[urlSplit.length-1];
 			}
 		}
 		
-		return result;
-		
+		return result;		
 	}
 	
 	private String getAjax(String url) {
