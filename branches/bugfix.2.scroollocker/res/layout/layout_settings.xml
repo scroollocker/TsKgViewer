@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <CheckBoxPreference android:key="pref_defplayer" android:summary="Использовать ли стандартный плеер для воспроизведения контента. Если не отмечено используется системный плеер." android:title="Встроенный плеер" android:defaultValue="true"/>
+</PreferenceScreen>
