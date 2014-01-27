@@ -58,7 +58,6 @@ public class VideoActivity extends Activity {
 			progress.dismiss();
 			currTryCount = 0;
 			video.start();
-			currTryCount = 0;
 		}
 	};
 	
