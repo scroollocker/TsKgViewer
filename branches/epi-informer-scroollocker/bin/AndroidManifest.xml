@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.skytechdev.tskgviewerreborn"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.MenuActivity"
+            android:label="@string/title_activity_menu" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.SerialActivity"
+            android:label="@string/title_activity_serial" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.EpisodActivity"
+            android:label="@string/title_activity_episod" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.SerialListActivity"
+            android:label="@string/title_activity_serial_list" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.ListActivity"
+            android:label="@string/title_activity_list" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.NewEpiActivity"
+            android:label="@string/title_activity_new_epi" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.LastSeenActivity"
+            android:label="@string/title_activity_last_seen" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.LastSeenActivity"
+            android:label="@string/title_activity_last_seen_new" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.NewEpiActivity"
+            android:label="@string/title_activity_new_epi_re" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.FavoritesActivity"
+            android:label="@string/title_activity_favorites" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="ru.skytechdev.tskgviewerreborn.VideoActivity"
+            android:label="@string/title_activity_video" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
+    </application>
+
+</manifest>
