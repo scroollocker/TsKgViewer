@@ -29,10 +29,8 @@ public class VideoUrlGenerator {
 		return result;		
 	}
 	
-	private String getAjax(String url) {
-		String result = "";
-		
-		String id = getEpisodeId(url);
+	private HashMap<String,String> getEpisodAjaxResponse(String id) {
+		HashMap<String,String> result = new HashMap<String,String>();
 		
 		if (id.isEmpty()) {
 			return result;
@@ -54,6 +52,8 @@ public class VideoUrlGenerator {
 		JSONParser parser = new JSONParser();
 		
 		JSONObject jsObj = null;
+		
+		
 		try {
 			jsObj = (JSONObject) parser.parse(respBody);
 		} catch (ParseException e) {
@@ -64,7 +64,23 @@ public class VideoUrlGenerator {
 			return result;
 		}
 		
-		result = (String) jsObj.get("file");
+		result = (HashMap<String,String>) jsObj;
+		
+		return result;		
+	}
+	
+	private String getAjax(String url) {
+		String result = "";
+		
+		String id = getEpisodeId(url);
+		
+		if (id.isEmpty()) {
+			return result;
+		}
+		
+		HashMap<String, String> dataResp = getEpisodAjaxResponse(id);
+		
+		result = dataResp.get("file");
 		
 		return result;
 		
@@ -83,5 +99,21 @@ public class VideoUrlGenerator {
 		return link;
 		
 	}
+	
+	public String getEpiID(String url) {
+		return getEpisodeId(url);
+	}
+	
+	public String makeSerialPrev(String url) {
+		
+		String result = "";
+		String id = getEpiID(url);
+		HashMap<String, String> dataResp = getEpisodAjaxResponse(id);
+		
+		result = dataResp.get("sname")+" | Сезон: "+dataResp.get("season")+" | эпизод: "+dataResp.get("alias");
+		
+		return result;
+	}
+	
 	
 }
