@@ -2,6 +2,8 @@ package ru.skytechdev.tskgviewerreborn;
 
 import java.util.ArrayList;
 
+import android.content.pm.ActivityInfo;
+
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -18,6 +20,7 @@ public class VideoActivity extends Activity {
 	private VideoView video;
 	private ProgressDialog progress;
 	private int nowPlayed;
+	private boolean inProgress = false;
 	
 	private int currTryCount;
 	private final int MAX_TRY_COUNT = 5;
@@ -26,11 +29,14 @@ public class VideoActivity extends Activity {
 	public static boolean grabType = true;
 	
 	private void showProgressBar() {
-
+		progress = new ProgressDialog(VideoActivity.this);
+		progress.setTitle("Открытие");
+		progress.setMessage("Пожалуйтса ждите...");
 		new AsyncTask<Void, Void, String>() {
 			
 			@Override
 			protected String doInBackground(Void... arg0) {
+				inProgress = true;
 				String url = playlist.get(nowPlayed);
 				VideoUrlGenerator urlGen = new VideoUrlGenerator();
 				String prevText = urlGen.makeSerialPrev(url);
@@ -39,12 +45,16 @@ public class VideoActivity extends Activity {
 			
 			@Override
 			protected void onPostExecute(String result) {
-				progress = ProgressDialog.show(VideoActivity.this, "Открытие...", result ,false);
+				progress.setTitle("Открытие");
+				progress.setMessage(result);				
 				progress.setCancelable(true);
+				
+				inProgress = false;
 			}
 			
 		}.execute();
-		 
+		
+		progress.show();
 	}
 	
 	private void playNext() {
@@ -56,6 +66,7 @@ public class VideoActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.activity_video);
 		video = (VideoView)findViewById(R.id.videoView1);
 		video.setMediaController(new MediaController(this));
