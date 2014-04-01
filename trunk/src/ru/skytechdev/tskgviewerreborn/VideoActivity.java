@@ -26,8 +26,25 @@ public class VideoActivity extends Activity {
 	public static boolean grabType = true;
 	
 	private void showProgressBar() {
-		progress = ProgressDialog.show(VideoActivity.this, "", "Открытие..." ,false);
-		progress.setCancelable(true);
+
+		new AsyncTask<Void, Void, String>() {
+			
+			@Override
+			protected String doInBackground(Void... arg0) {
+				String url = playlist.get(nowPlayed);
+				VideoUrlGenerator urlGen = new VideoUrlGenerator();
+				String prevText = urlGen.makeSerialPrev(url);
+				return prevText;
+			}
+			
+			@Override
+			protected void onPostExecute(String result) {
+				progress = ProgressDialog.show(VideoActivity.this, "Открытие...", result ,false);
+				progress.setCancelable(true);
+			}
+			
+		}.execute();
+		 
 	}
 	
 	private void playNext() {
