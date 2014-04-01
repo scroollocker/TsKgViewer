@@ -43,19 +43,6 @@ public class Favorites {
 		catch (ClassNotFoundException e) {
 
 		} 
-		/*
-		favList.clear();
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-	    int itemCount = sp.getInt("fl_ItemCount", 0);
-	    for (int i = 0; i < itemCount; i++) {
-	    	TSItem item = new TSItem();
-	    	item.value = sp.getString("fl_Caption_"+i, "");
-	    	item.url = sp.getString("fl_Url_"+i, "");
-	    	item.imgurl = sp.getString("fl_Img_"+i, "");
-	    	
-	    	favList.add(item);
-	    }
-	    */
 	}
 	
 	public void saveToSettings() {	

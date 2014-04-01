@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,26 +22,34 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		ListView epiView = (ListView)findViewById(R.id.listView1);
+
+		int seasonId = tsEngine.getSelectedSeasonId();
+		int epiCount = tsEngine.getEpisodesCount(seasonId);
 		
-	}	
+		
+		TSSeenEpiItem[] episodes = new TSSeenEpiItem[epiCount];
+		EpiSeen epiSeen = new EpiSeen();
+		epiSeen.setContext(EpisodActivity.this);
+		epiSeen.loadSerialAct(tsEngine.getSerialUrl());
+		
+		for (int i = 0; i < epiCount; i++) {
+			episodes[i] = new TSSeenEpiItem();
+			episodes[i].title = tsEngine.getSeasonCaption(seasonId) + " / " + 
+					 			tsEngine.getEpisodeCaption(i);
+			episodes[i].date = epiSeen.isInList(tsEngine.getVideoUrl(i));
+		}
+		
+		TSEpilistAdapter epiAdapter = new TSEpilistAdapter(EpisodActivity.this,episodes);
+		
+		epiView.setAdapter(epiAdapter);		
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_episod);
 		ListView epiView = (ListView)findViewById(R.id.listView1);
-
-		int seasonId = tsEngine.getSelectedSeasonId();
-		
-		String epiItem [] = new String[tsEngine.getEpisodesCount(seasonId)];
-		
-		for (int i = 0; i < tsEngine.getEpisodesCount(seasonId); i++) {
-			epiItem[i] = tsEngine.getSeasonCaption(seasonId) + " / " + 
-						 tsEngine.getEpisodeCaption(i);
-		}
-		
-		epiView.setAdapter((ListAdapter) new ArrayAdapter<String>(EpisodActivity.this,
-				   android.R.layout.simple_list_item_1, epiItem));	
 		
 		epiView.setOnItemClickListener(this);
 	}

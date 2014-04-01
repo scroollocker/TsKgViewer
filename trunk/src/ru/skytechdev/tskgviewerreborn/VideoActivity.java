@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -20,7 +21,7 @@ public class VideoActivity extends Activity {
 	private VideoView video;
 	private ProgressDialog progress;
 	private int nowPlayed;
-	private boolean inProgress = false;
+	private EpiSeen seenEpi = new EpiSeen();
 	
 	private int currTryCount;
 	private final int MAX_TRY_COUNT = 5;
@@ -36,7 +37,7 @@ public class VideoActivity extends Activity {
 			
 			@Override
 			protected String doInBackground(Void... arg0) {
-				inProgress = true;
+
 				String url = playlist.get(nowPlayed);
 				VideoUrlGenerator urlGen = new VideoUrlGenerator();
 				String prevText = urlGen.makeSerialPrev(url);
@@ -49,7 +50,6 @@ public class VideoActivity extends Activity {
 				progress.setMessage(result);				
 				progress.setCancelable(true);
 				
-				inProgress = false;
 			}
 			
 		}.execute();
@@ -60,12 +60,29 @@ public class VideoActivity extends Activity {
 	private void playNext() {
 		nowPlayed++;
 		showProgressBar();
+
 		new AsyncExecution().execute(nowPlayed);
+	}
+	
+	@Override 
+	protected void onStart() {
+		super.onStart();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
+	
+	@Override 
+	protected void onStop() {
+		super.onStop();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		seenEpi.setContext(VideoActivity.this);
+		seenEpi.loadSerialAct(playlist.get(0));
+		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.activity_video);
 		video = (VideoView)findViewById(R.id.videoView1);
@@ -134,6 +151,9 @@ public class VideoActivity extends Activity {
 			
 			int listSize = playlist.size();
 			if (listSize > id) {	
+				
+				seenEpi.addToList(playlist.get(id));
+				
 				VideoUrlGenerator urlGen = new VideoUrlGenerator();
 				url = urlGen.makeVideoUrl(playlist.get(id));
 				result = true;
