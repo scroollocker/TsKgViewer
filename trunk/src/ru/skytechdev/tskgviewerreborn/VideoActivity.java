@@ -37,10 +37,12 @@ public class VideoActivity extends Activity {
 			
 			@Override
 			protected String doInBackground(Void... arg0) {
-
-				String url = playlist.get(nowPlayed);
-				VideoUrlGenerator urlGen = new VideoUrlGenerator();
-				String prevText = urlGen.makeSerialPrev(url);
+				String prevText = "";
+				if (nowPlayed < playlist.size()) {				
+					String url = playlist.get(nowPlayed);
+					VideoUrlGenerator urlGen = new VideoUrlGenerator();
+					prevText = urlGen.makeSerialPrev(url);
+				}
 				return prevText;
 			}
 			
