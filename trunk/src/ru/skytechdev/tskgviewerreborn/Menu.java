@@ -42,7 +42,8 @@ public class Menu {
 			for (int i = 0; i < menuElements.size(); i++) {
 				String link = menuElements.get(i).attr("href");
 				String caption = menuElements.get(i).text();
-				if (link.indexOf("megogo") == -1) {
+				/* Пропускаем сериалы с megogo и онлайн с 5го канала */
+				if (link.indexOf("megogo") == -1 && !caption.equals("Онлайн")) {
 					TSMenuItem item = new TSMenuItem();
 					if (link.indexOf("shows") != -1) {
 						caption += " телепередачи";
