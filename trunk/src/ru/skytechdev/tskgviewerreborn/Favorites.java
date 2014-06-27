@@ -73,7 +73,14 @@ public class Favorites {
 		boolean result = false;
 		for (int i = 0; i < getCount(); i++) {
 			TSItem obj = getItem(i);
-			if (obj.equals(item)) {
+			String[] urlpart1 = item.url.split("/");
+			String[] urlpart2 = obj.url.split("/");	
+			if (urlpart1.length == 0 || urlpart2.length == 0) {
+				return false;
+			}
+			//String serial_file = urlpart[4];			
+			/*if (obj.equals(item)) {*/
+			if (urlpart1[4].equals(urlpart2[4])) {
 				result = true;
 				break;
 			}

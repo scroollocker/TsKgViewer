@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TSNewEpiAdapter extends ArrayAdapter<TSNewEpisodesItem> {
@@ -21,6 +22,7 @@ public class TSNewEpiAdapter extends ArrayAdapter<TSNewEpisodesItem> {
 		public TextView caption;
 		public TextView date;
 		public TextView comment;
+		public ImageView favorite;
 	}
 	
 	@Override
@@ -37,7 +39,8 @@ public class TSNewEpiAdapter extends ArrayAdapter<TSNewEpisodesItem> {
 	        
 	        holder.caption = (TextView)rowView.findViewById(R.id.ne_caption);
 	        holder.date = (TextView)rowView.findViewById(R.id.ne_date);
-	        holder.comment = (TextView)rowView.findViewById(R.id.ne_comment);	        
+	        holder.comment = (TextView)rowView.findViewById(R.id.ne_comment);
+	        holder.favorite = (ImageView)rowView.findViewById(R.id.ne_isfavorite);
 	        
 	        rowView.setTag(holder);
 		}
@@ -48,6 +51,12 @@ public class TSNewEpiAdapter extends ArrayAdapter<TSNewEpisodesItem> {
 		holder.caption.setText(items[position].caption);
         holder.date.setText("дата: " +items[position].date);
         holder.comment.setText(items[position].comment);
+        if (items[position].isFavorite) {
+        	holder.favorite.setVisibility(View.VISIBLE);
+        }
+        else {
+        	holder.favorite.setVisibility(View.GONE);
+        }
 		
         return rowView;
 

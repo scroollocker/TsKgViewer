@@ -27,6 +27,12 @@ public class NewEpiActivity extends Activity implements OnItemClickListener {
 		TSNewEpisodesItem[] items = new TSNewEpisodesItem[tsEngine.getNewEpiCount()];
 		for (int i = 0; i < tsEngine.getNewEpiCount(); i++) {
 			items[i] = tsEngine.getNewEpiItem(i);
+			if (tsEngine.isInFavorites("", items[i].link, "")) {
+				items[i].isFavorite = true;
+			}
+			else {
+				items[i].isFavorite = false;
+			}
 		}
 		
 		TSNewEpiAdapter adapter = new TSNewEpiAdapter(NewEpiActivity.this,items);

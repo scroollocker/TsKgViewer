@@ -30,7 +30,7 @@ public class TSEngine {
 		}
 		
 		public boolean isInFavorites(String cap, String url, String img) {
-			if (cap.isEmpty() || url.isEmpty() || img.isEmpty()) {
+			if (url.isEmpty()/*cap.isEmpty() ||  || img.isEmpty()*/) {
 				return false;
 			}
 			TSItem item = new TSItem();

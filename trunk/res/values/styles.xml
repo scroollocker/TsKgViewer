@@ -17,5 +17,6 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     <color name="text_red">#FF0000</color>
+    <color name="bg_yellow">#F7FE2E</color>
 
 </resources>

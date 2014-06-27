@@ -5,4 +5,5 @@ public class TSNewEpisodesItem {
 	public String link;
 	public String date;
 	public String comment;
+	public boolean isFavorite;
 }
