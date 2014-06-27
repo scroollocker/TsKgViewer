@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -14,12 +15,16 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	public static boolean isExit = false;
 	
+	private Button btnRep;
+	private TextView tvNotify;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        Button btnRep = (Button)findViewById(R.id.button1);        
+        btnRep = (Button)findViewById(R.id.button1);  
+        tvNotify = (TextView)findViewById(R.id.ls_caption);
 		btnRep.setVisibility(View.INVISIBLE);
 		btnRep.setOnClickListener(this);
 		isExit = false;
@@ -52,7 +57,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				Toast.makeText(getBaseContext(),
 						"Ќе удалось загрузить список категорий",
 						Toast.LENGTH_LONG).show();
-				Button btnRep = (Button)findViewById(R.id.button1);
+				tvNotify.setVisibility(View.INVISIBLE);
 				btnRep.setVisibility(View.VISIBLE);
 			}
 			else {
@@ -66,7 +71,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		new AsyncExecution().execute();
-		Button btnRep = (Button)findViewById(R.id.button1);
 		btnRep.setVisibility(View.INVISIBLE);
+		tvNotify.setVisibility(View.VISIBLE);
 	}
 }
