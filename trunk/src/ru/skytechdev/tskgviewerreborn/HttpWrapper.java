@@ -33,12 +33,13 @@ public class HttpWrapper {
 		return doc;
 	}
 	
-	public static Document postHttpAjax(String url, Map<String,String> data) {
+	public static Document postHttpAjax(String url, Map<String,String> data, String refer) {
 		Document doc = null;
 		try {
 			doc = Jsoup.connect(url)					
 					.header("Accept", "application/json, text/javascript, */*; q=0.01")
 					.header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+					.header("Referer", refer)
 					.ignoreContentType(true)
 					.data(data)
 					.ignoreContentType(true)

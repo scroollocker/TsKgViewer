@@ -32,7 +32,7 @@ public class VideoActivity extends Activity {
 	private void showProgressBar() {
 		progress = new ProgressDialog(VideoActivity.this);
 		progress.setTitle("Открытие");
-		progress.setMessage("Пожалуйтса ждите...");
+		progress.setMessage("Пожалуйста ждите...");
 		new AsyncTask<Void, Void, String>() {
 			
 			@Override
