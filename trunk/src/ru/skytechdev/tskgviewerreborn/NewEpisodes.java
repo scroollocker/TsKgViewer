@@ -57,6 +57,9 @@ public class NewEpisodes {
 				TSNewEpisodesItem epiNode = new TSNewEpisodesItem(); 
 				epiNode.caption = epiItem.text();
 				epiNode.link = epiItem.attr("href");
+				if (!epiNode.link.matches(".*ts.kg.*")) {
+					continue;
+				}
 				epiNode.date = currDate;
 				Elements comItem = epiElements.get(i).select("span");
 				if (comItem.size() > 0) {

@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import ru.skytechdev.tskgviewerreborn.R.string;
+
 import android.content.Context;
 
 public class Favorites {
@@ -78,11 +80,11 @@ public class Favorites {
 			if (urlpart1.length == 0 || urlpart2.length == 0) {
 				return false;
 			}
-			//String serial_file = urlpart[4];			
-			/*if (obj.equals(item)) {*/
-			if (urlpart1[4].equals(urlpart2[4])) {
-				result = true;
-				break;
+			if (urlpart1.length >= 5 && urlpart2.length >= 5) {
+				if (urlpart1[4].equals(urlpart2[4])) {
+					result = true;
+					break;
+				}
 			}
 		}
 		return result;
