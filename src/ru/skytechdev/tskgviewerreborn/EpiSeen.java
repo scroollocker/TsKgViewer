@@ -10,13 +10,14 @@ import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.util.Log;
 
 public class EpiSeen {
 	private Context context;
-	private String base_url = "http://www.ts.kg";
 	private ArrayList<TSSeenEpiItem> epiList = new ArrayList<TSSeenEpiItem>();
 	
 	public void setContext(Context context) {
@@ -26,27 +27,14 @@ public class EpiSeen {
 	public void loadSerialAct(String url) {
 		clear();
 		
-		Log.d("file_url",url);
+		String serial_file = parseSerialName(url);
 		
-		if (url.substring(0,1).equals("/")) {
-			url = base_url+url;
-		}
+		Log.d("LOAD: seen serial file name", serial_file);
 		
-		String[] urlpart = url.split("/");
-		if (urlpart.length == 0) {
-			return;
-		}	
-		String serial_file;
-		if (urlpart.length >= 5 ) {
-			
-			serial_file = urlpart[4];
-			Log.d("file_url",serial_file);
-		}
-		else {
+		if (serial_file.isEmpty()) {
 			return;
 		}
-		
-		
+				
 		File favFile = new File(context.getDir("data",Context.MODE_PRIVATE),serial_file);
 		
 		try {
@@ -71,24 +59,15 @@ public class EpiSeen {
 		} 
 	}
 	
-	public void saveSerialAct(String url) {	
-		if (url.substring(0,1).equals("/")) {
-			url = base_url+url;
-		}
+	public void saveSerialAct(String url) {
+		String serial_file = parseSerialName(url);
 		
-		String[] urlpart = url.split("/");
-		if (urlpart.length == 0) {
-			return;
-		}	
+		Log.d("SAVE: seen serial file name", serial_file);
 		
-		String serial_file = "";
-		if (urlpart.length >= 5 ) {
-			serial_file = urlpart[4];
-			Log.d("file_url",serial_file);
-		}
-		else {
+		if (serial_file.isEmpty()) {
 			return;
 		}
+				
 		File favFile = new File(context.getDir("data",Context.MODE_PRIVATE),serial_file);
 		
 		try {
@@ -121,6 +100,7 @@ public class EpiSeen {
 	}
 	
 	public String isInList(String url) {
+				
 		String result = "";
 		for (int i = 0; i < getCount(); i++) {
 			TSSeenEpiItem item;
@@ -134,7 +114,7 @@ public class EpiSeen {
 	}
 	
 	public void addToList(String url) {
-		Log.d("seen url", "url");
+		Log.d("seen url", url);		
 		
 		if (isInList(url) != "") {
 			return;
@@ -143,10 +123,27 @@ public class EpiSeen {
 		TSSeenEpiItem item = new TSSeenEpiItem();
 		item.title = "";
 		item.url = url;
-		
+			
 		item.date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
-		
+			
 		epiList.add(item);
-		saveSerialAct(item.url);
+		saveSerialAct(item.url);		
+	}
+	
+	public String parseSerialName(String url) {
+		Pattern serialCaptionPattern = Pattern.compile("(show/)([a-z_]*)");  
+    	Matcher matcher = serialCaptionPattern.matcher(url);
+    	
+    	String serialName = "";
+    	
+    	if(matcher.find()){  
+    		serialName = matcher.group(2);   
+    	} 
+    	
+    	if (serialName == null) {
+    		serialName = "";
+    	}
+		
+    	return serialName;
 	}
 }

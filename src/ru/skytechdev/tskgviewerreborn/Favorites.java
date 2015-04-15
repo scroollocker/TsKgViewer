@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.skytechdev.tskgviewerreborn.R.string;
-
 import android.content.Context;
 
 public class Favorites {
 	private ArrayList<TSItem> favList = new ArrayList<TSItem>();
 	private Context context;
-	private String base_url = "http://www.ts.kg";
 	
 	public void setContext(Context context) {
 		this.context = context;
@@ -74,35 +74,19 @@ public class Favorites {
 	
 	public boolean isExist(TSItem item) {
 		boolean result = false;
-		for (int i = 0; i < getCount(); i++) {
-			TSItem obj = getItem(i);
-			String url1;
-			String url2;
-			if (item.url.substring(0,1).equals("/")) {
-				url1 = base_url+item.url;
-			}
-			else {
-				url1 = item.url;
-			}
-			if (obj.url.substring(0,1).equals("/")) {
-				url2 = base_url+obj.url;
-			}
-			else {
-				url2 = obj.url;
-			}
+		for (int i = 0; i < getCount(); i++) {			
+			String url1 = item.url;			
+			String url2 = getItem(i).url;
 			
+			url1 = parseSerialName(url1);
+			url2 = parseSerialName(url2);
 			
-			String[] urlpart1 = url1.split("/");
-			String[] urlpart2 = url2.split("/");	
-			if (urlpart1.length == 0 || urlpart2.length == 0) {
-				return false;
-			}
-			if (urlpart1.length >= 5 && urlpart2.length >= 5) {
-				if (urlpart1[4].equals(urlpart2[4])) {
+			if (!url1.isEmpty() && !url2.isEmpty()) {			
+				if (url1.equals(url2)) {
 					result = true;
 					break;
 				}
-			}
+			}			
 		}
 		return result;
 	}
@@ -126,6 +110,23 @@ public class Favorites {
 		if (!favList.equals(val)) {
 			favList.add(val);
 		}
+	}
+	
+	public String parseSerialName(String url) {
+		Pattern serialCaptionPattern = Pattern.compile("(show/)([a-z_]*)");  
+    	Matcher matcher = serialCaptionPattern.matcher(url);
+    	
+    	String serialName = "";
+    	
+    	if(matcher.find()){  
+    		serialName = matcher.group(2);   
+    	} 
+    	
+    	if (serialName == null) {
+    		serialName = "";
+    	}
+		
+    	return serialName;
 	}
 	
 }
