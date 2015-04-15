@@ -1,4 +1,4 @@
 *.apk
 *.dex
 *~
-trunk/bin/dexedLibs/*
+bin/dexedLibs/*
