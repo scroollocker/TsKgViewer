@@ -49,8 +49,8 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(SerialListActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);		
+		ProgressBar = ProgressDialog.show(SerialListActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
 
@@ -71,7 +71,7 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить выбранный сериал",
+						"РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРµСЂРёР°Р»",
 						Toast.LENGTH_LONG).show();
 			}
 			else {

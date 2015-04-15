@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.Context;
+import android.util.Log;
 
 public class EpiSeen {
 	private Context context;
+	private String base_url = "http://www.ts.kg";
 	private ArrayList<TSSeenEpiItem> epiList = new ArrayList<TSSeenEpiItem>();
 	
 	public void setContext(Context context) {
@@ -23,11 +25,28 @@ public class EpiSeen {
 	
 	public void loadSerialAct(String url) {
 		clear();
+		
+		Log.d("file_url",url);
+		
+		if (url.substring(0,1).equals("/")) {
+			url = base_url+url;
+		}
+		
 		String[] urlpart = url.split("/");
 		if (urlpart.length == 0) {
 			return;
 		}	
-		String serial_file = urlpart[4];
+		String serial_file;
+		if (urlpart.length >= 5 ) {
+			
+			serial_file = urlpart[4];
+			Log.d("file_url",serial_file);
+		}
+		else {
+			return;
+		}
+		
+		
 		File favFile = new File(context.getDir("data",Context.MODE_PRIVATE),serial_file);
 		
 		try {
@@ -53,12 +72,23 @@ public class EpiSeen {
 	}
 	
 	public void saveSerialAct(String url) {	
+		if (url.substring(0,1).equals("/")) {
+			url = base_url+url;
+		}
+		
 		String[] urlpart = url.split("/");
 		if (urlpart.length == 0) {
 			return;
 		}	
-		String serial_file = urlpart[4];
 		
+		String serial_file = "";
+		if (urlpart.length >= 5 ) {
+			serial_file = urlpart[4];
+			Log.d("file_url",serial_file);
+		}
+		else {
+			return;
+		}
 		File favFile = new File(context.getDir("data",Context.MODE_PRIVATE),serial_file);
 		
 		try {
@@ -104,6 +134,8 @@ public class EpiSeen {
 	}
 	
 	public void addToList(String url) {
+		Log.d("seen url", "url");
+		
 		if (isInList(url) != "") {
 			return;
 		}

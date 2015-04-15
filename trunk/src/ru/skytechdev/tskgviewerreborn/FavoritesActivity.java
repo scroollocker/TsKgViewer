@@ -33,15 +33,15 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 	public void onStart() {
 		super.onStart();
 		
-		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);
+		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);
 		new AsyncImageLoader().execute();
 	}
 		
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);		
+		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
 
@@ -66,7 +66,7 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить сериал",
+						"РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ СЃРµСЂРёР°Р»!",
 						Toast.LENGTH_LONG).show();
 			}
 			else {

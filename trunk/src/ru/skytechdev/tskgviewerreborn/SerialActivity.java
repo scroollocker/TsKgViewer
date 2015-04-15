@@ -34,11 +34,11 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 		
 		if (isInFavorites) {
 			starImg.setImageResource(android.R.drawable.btn_star_big_on);
-			starText.setText("Убрать из избранного");
+			starText.setText("РЈР±СЂР°С‚СЊ РёР· РёР·Р±СЂР°РЅРЅРѕРіРѕ");
 		}
 		else {
 			starImg.setImageResource(android.R.drawable.btn_star_big_off);
-			starText.setText("Добавить в избранное");
+			starText.setText("Р”РѕР±Р°РІРёС‚СЊ РІ РёР·Р±СЂР°РЅРЅРѕРµ");
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 		for (int i = 0; i < tsEngine.getSeasonCount(); i++) {
 			seasonItem[i] = tsEngine.getSeasonCaption(i);
 			epiCount = tsEngine.getEpisodesCount(i);
-			epiCountItem[i] = "Количество серий: " + epiCount.toString();
+			epiCountItem[i] = "РљРѕР»РёС‡РµСЃС‚РІРѕ СЌРїРёР·РѕРґРѕРІ: " + epiCount.toString();
 		}
 		
 		seasonView.setAdapter((ListAdapter) new ArrayAdapter<String>(SerialActivity.this,
@@ -89,8 +89,8 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(SerialActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);		
+		ProgressBar = ProgressDialog.show(SerialActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
 
@@ -111,7 +111,7 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить список сериалов",
+						"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє СЌРїРёР·РѕРґРѕРІ",
 						Toast.LENGTH_LONG).show();
 			}
 			else {
@@ -129,13 +129,13 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 		if (isInFavorites) {
 			tsEngine.delFromFavorites(thisSerial.value, thisSerial.url, thisSerial.imgurl);
 			starImg.setImageResource(android.R.drawable.btn_star_big_off);
-			starText.setText("Добавить в избранное");
+			starText.setText("Р”РѕР±Р°РІРёС‚СЊ РІ РёР·Р±СЂР°РЅРЅРѕРµ");
 			isInFavorites = false;
 		}
 		else {			
 			tsEngine.addToFavorites(thisSerial.value, thisSerial.url, thisSerial.imgurl);
 			starImg.setImageResource(android.R.drawable.btn_star_big_on);
-			starText.setText("Убрать из избранного");
+			starText.setText("РЈР±СЂР°С‚СЊ РёР· РёР·Р±СЂР°РЅРЅРѕРіРѕ");
 			isInFavorites = true;
 		}
 	}

@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import android.util.Log;
+
 public class SerialInfo {
 	private String caption;
 	private String img;
 	private String url;
 	private ArrayList<TSEpisodeItem> seasons = new ArrayList<TSEpisodeItem>();
 	private String discription;
+	private String base_url = "http://www.ts.kg";
 	
 	public void clear() {
 		seasons.clear();
@@ -96,36 +99,53 @@ public class SerialInfo {
 		Elements discriptionRes = doc.select("meta");
 		
 		for (int i = 0; i < discriptionRes.size(); i++) {
-			if (discriptionRes.attr("name").compareTo("description") == 0) {
-				discription = discriptionRes.attr("content");
+			String property = discriptionRes.get(i).attr("property");
+			Log.d("property", property);
+			if (property.indexOf("description") != -1) {
+				discription = discriptionRes.get(i).attr("content");
 			}
+			if (property.indexOf("image") != -1) {
+				img = discriptionRes.get(i).attr("content");
+			}
+			if (property.indexOf("title") != -1) {
+				caption = discriptionRes.get(i).attr("content");
+			}
+			
 		}
 		
-		img = doc.select("img.serial_cover").attr("src");		
-		caption = doc.select("title").text();
+		//img = doc.select("img.serial_cover").attr("src");		
+		//caption = doc.select("title").text();
 		
-		if (!caption.isEmpty()) {
-			caption = caption.replace("TS.KG - ", "");
-		}
+		//if (!caption.isEmpty()) {
+		//	caption = caption.replace("TS.KG - ", "");
+		//}
 		
-		Elements serialElement = doc.select("div.episodes").select("ul");
+		Elements serialElement = doc.select("section");
 		
 		if (serialElement.size() > 0) {			
 			for (int i = 0; i < serialElement.size(); i++) {
 				String epiCaption;
 				Elements episodes = serialElement.get(i).select("a");
-				epiCaption = serialElement.get(i).select("h4").text();
+				epiCaption = serialElement.get(i).select("h3").text();
 				ArrayList<TSMenuItem> epiItem = new ArrayList<TSMenuItem>(); 
 				for (int j = 0; j < episodes.size(); j++) {
 					TSMenuItem item = new TSMenuItem();
-					item.url = episodes.get(j).attr("href");
+					String link = episodes.get(j).attr("href");
+					if (link.substring(0, 1).equals("/")) {
+						link = base_url + link;
+					}
+					item.url = link;
 					item.value = episodes.get(j).text();
 					epiItem.add(item);
 				}
-				addEpisodes(epiCaption, epiItem);
+				if (epiItem.size() > 0) {
+					addEpisodes(epiCaption, epiItem);
+				}
 			}
-			result = true;
-			this.url = url;  
+			if (getSeasonCount() > 0) {
+				result = true;
+				this.url = url;  
+			}
 		}
 				
 		

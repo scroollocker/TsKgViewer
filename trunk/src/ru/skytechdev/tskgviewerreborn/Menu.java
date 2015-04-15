@@ -6,7 +6,7 @@ import org.jsoup.select.Elements;
 
 
 public class Menu {
-	private String baseurl = "http://www.ts.kg/";
+	private String baseurl = "http://www.ts.kg";
 	private ArrayList<TSMenuItem> menuItems = new ArrayList<TSMenuItem>();
 	
 	public TSMenuItem getItemById(int id) {
@@ -36,28 +36,29 @@ public class Menu {
 		if (getItemCount() > 0) {
 			menuItems.clear();
 		}
-		
-		Elements menuElements = doc.select("header").select("ul.dropdown-menu").select("a");
+				
+		Elements menuElements = doc.select(".footer-links").select("a");
 		if (menuElements.size() > 0) {
 			for (int i = 0; i < menuElements.size(); i++) {
 				String link = menuElements.get(i).attr("href");
 				String caption = menuElements.get(i).text();
-				/* Пропускаем сериалы с megogo и онлайн с 5го канала */
-				if (link.indexOf("megogo") == -1 && !caption.equals("Онлайн")) {
+				if (link.indexOf("/show/") != -1) {
 					TSMenuItem item = new TSMenuItem();
-					if (link.indexOf("shows") != -1) {
-						caption += " телепередачи";
+					if (link.substring(0,1).equals("/")) {
+						link = baseurl + link;
 					}
+					
 					item.url = link;
 					item.value = caption;
 					addItem(item);
 				}
 			}
-			/* KIDI */
+			/* for kidi fix */
 			TSMenuItem item = new TSMenuItem();
-			item.url = "http://www.ts.kg/kids/";
-			item.value = "Для детей";
+			item.url = "http://www.ts.kg/show/?category=3&sort=a";
+			item.value = "Р”Р»СЏ РґРµС‚РµР№";
 			addItem(item);
+			
 			result = true;
 		}		
 		

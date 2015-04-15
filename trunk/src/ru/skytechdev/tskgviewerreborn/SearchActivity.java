@@ -32,8 +32,8 @@ public class SearchActivity extends Activity {
 			    if(event.getAction() == KeyEvent.ACTION_DOWN && 
 				    (keyCode == KeyEvent.KEYCODE_ENTER)) {
 			    		EditText searchView = (EditText)findViewById(R.id.editText1);
-			    		ProgressBar = ProgressDialog.show(SearchActivity.this, "Пожалуйста ждите...",
-		    					  "Получение данных.... ", true, false);
+			    		ProgressBar = ProgressDialog.show(SearchActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+		    					  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);
 			    		new AsyncExecutionSearch().execute(searchView.getText().toString());
 						return true;
 				}
@@ -49,8 +49,8 @@ public class SearchActivity extends Activity {
 				if (searchText.isEmpty()) {
 					return;
 				}
-				ProgressBar = ProgressDialog.show(SearchActivity.this, "Пожалуйста ждите...",
-  					  "Получение данных.... ", true, false);
+				ProgressBar = ProgressDialog.show(SearchActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+  					  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);
 				new AsyncExecutionSearch().execute(searchText);
 			}
 		});
@@ -61,8 +61,8 @@ public class SearchActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				ProgressBar = ProgressDialog.show(SearchActivity.this, "Пожалуйста ждите...",
-	  					  "Получение данных.... ", true, false);
+				ProgressBar =  ProgressDialog.show(SearchActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+	  					  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);
 				new AsyncExecutionSerial().execute(arg2);				
 			}
 			
@@ -91,7 +91,7 @@ public class SearchActivity extends Activity {
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"По вашему запросу ничего не найдено",
+						"РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ",
 						Toast.LENGTH_LONG).show();
 			}
 			else {
@@ -129,7 +129,7 @@ public class SearchActivity extends Activity {
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Неудалось загрузить выбранный сериал",
+						"РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРµСЂРёР°Р»",
 						Toast.LENGTH_LONG).show();
 			}
 			else {

@@ -61,8 +61,8 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(EpisodActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);			
+		ProgressBar = ProgressDialog.show(EpisodActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);			
 		new AsyncExecution().execute(arg2);
 	}
 	
@@ -106,7 +106,7 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 			ProgressBar.dismiss();
 			if (result == false) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить выбранную серию",
+						"РќРµРІРѕР·РјРѕР¶РЅРѕ РІРѕСЃРїСЂРѕРёР·РІРµСЃС‚Рё СЌРїРёР·РѕРґ",
 						Toast.LENGTH_LONG).show();
 				return;
 			}

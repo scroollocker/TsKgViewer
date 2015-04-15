@@ -49,7 +49,7 @@ public class TSNewEpiAdapter extends ArrayAdapter<TSNewEpisodesItem> {
 		}
 		
 		holder.caption.setText(items[position].caption);
-        holder.date.setText("‰‡Ú‡: " +items[position].date);
+        holder.date.setText("–î–∞—Ç–∞: " +items[position].date);
         holder.comment.setText(items[position].comment);
         if (items[position].isFavorite) {
         	holder.favorite.setVisibility(View.VISIBLE);

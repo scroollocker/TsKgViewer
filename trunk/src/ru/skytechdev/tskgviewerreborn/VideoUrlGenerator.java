@@ -19,20 +19,17 @@ public class VideoUrlGenerator {
 			return result;
 		}
 		
-		Element dlButton = doc.select("a#dl_button").first();
+		Element episodeItem = doc.select("input#episode_id_input").first();
 		
-		if (dlButton != null) {
-			if (dlButton.hasAttr("href")) {
-				String [] urlSplit = dlButton.attr("href").split("/");
-				result = urlSplit[urlSplit.length-1];
-			}
+		if (episodeItem != null) {
+			result = episodeItem.attr("value");			
 		}
 		
 		return result;		
 	}
 	
-	private HashMap<String,String> getEpisodAjaxResponse(String id, String url) {
-		HashMap<String,String> result = new HashMap<String,String>();
+	private Object getEpisodAjaxResponse(String id, String url) {
+		Object result = null;
 		
 		if (id.isEmpty()) {
 			return result;
@@ -40,10 +37,9 @@ public class VideoUrlGenerator {
 		
 		HashMap<String, String> postData = new HashMap<String, String>();
 		
-		postData.put("action", "getEpisodeJSON");
 		postData.put("episode", id);
 		
-		Document doc = HttpWrapper.postHttpAjax("http://www.ts.kg/ajax", postData, url);
+		Document doc = HttpWrapper.postHttpAjax("http://www.ts.kg/show/episode/episode.json", postData, url);
 		
 		if (doc == null) {
 			return result;
@@ -64,10 +60,18 @@ public class VideoUrlGenerator {
 		
 		if (jsObj == null) {
 			return result;
+		}		
+		
+		result = jsObj;
+		
+		/*JSONObject file = (JSONObject) jsObj.get("file");
+		
+		if (file == null) {
+			return result;
 		}
 		
-		result = (HashMap<String,String>) jsObj;
-		
+		result = (HashMap<String,String>) file;
+		*/
 		return result;		
 	}
 	
@@ -80,9 +84,21 @@ public class VideoUrlGenerator {
 			return result;
 		}
 		
-		HashMap<String, String> dataResp = getEpisodAjaxResponse(id, url);
+		JSONObject dataResp = (JSONObject)getEpisodAjaxResponse(id, url);
 		
-		result = dataResp.get("file");
+		if (dataResp == null) {
+			return result;
+		}
+		
+		JSONObject file = (JSONObject)dataResp.get("file");
+		
+		if (file == null) {
+			return result;
+		}
+		
+		HashMap<String,String> fileMap = (HashMap<String,String>)file;
+		
+		result = fileMap.get("mp4");
 		
 		return result;
 		
@@ -93,7 +109,7 @@ public class VideoUrlGenerator {
 			return "";
 		}
 		
-		String defLink = url.replace("http://www.ts.kg/" , "http://data2.ts.kg/video/") + ".mp4";
+		String defLink = url.replace("http://www.ts.kg/" , "http://data1.ts.kg/video/") + ".mp4";
 		
 		String link = getAjax(url);		
 		
@@ -117,14 +133,14 @@ public class VideoUrlGenerator {
 	public String makeSerialPrev(String url) {
 		
 		String result = "";
-		String id = getEpiID(url);
+		/*String id = getEpiID(url);
 		HashMap<String, String> dataResp = getEpisodAjaxResponse(id,url);
 		
 		if (dataResp == null) {
 			return result;
 		}
-		
-		result = dataResp.get("sname")+" | Сезон: "+dataResp.get("season")+" | эпизод: "+dataResp.get("alias");
+		*/
+		result = "Р—Р°РіСЂСѓР·РєР° СЃРµСЂРёР°Р»Р°...";//dataResp.get("sname")+" | пїЅпїЅпїЅпїЅпїЅ: "+dataResp.get("season")+" | пїЅпїЅпїЅпїЅпїЅпїЅ: "+dataResp.get("alias");
 		
 		return result;
 	}

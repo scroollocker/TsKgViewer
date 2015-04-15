@@ -48,7 +48,7 @@ public class TSEpilistAdapter extends ArrayAdapter<TSSeenEpiItem>{
 			holder.date.setText("");
 		}
 		else {
-			holder.date.setText("Дата просмотра: " +items[position].date);
+			holder.date.setText("Р”Р°С‚Р° РїСЂРѕСЃРјРѕС‚СЂР°: " +items[position].date);
 		}
 		
         return rowView;

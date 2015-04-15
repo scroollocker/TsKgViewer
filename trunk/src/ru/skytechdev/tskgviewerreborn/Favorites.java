@@ -16,6 +16,7 @@ import android.content.Context;
 public class Favorites {
 	private ArrayList<TSItem> favList = new ArrayList<TSItem>();
 	private Context context;
+	private String base_url = "http://www.ts.kg";
 	
 	public void setContext(Context context) {
 		this.context = context;
@@ -75,8 +76,24 @@ public class Favorites {
 		boolean result = false;
 		for (int i = 0; i < getCount(); i++) {
 			TSItem obj = getItem(i);
-			String[] urlpart1 = item.url.split("/");
-			String[] urlpart2 = obj.url.split("/");	
+			String url1;
+			String url2;
+			if (item.url.substring(0,1).equals("/")) {
+				url1 = base_url+item.url;
+			}
+			else {
+				url1 = item.url;
+			}
+			if (obj.url.substring(0,1).equals("/")) {
+				url2 = base_url+obj.url;
+			}
+			else {
+				url2 = obj.url;
+			}
+			
+			
+			String[] urlpart1 = url1.split("/");
+			String[] urlpart2 = url2.split("/");	
 			if (urlpart1.length == 0 || urlpart2.length == 0) {
 				return false;
 			}

@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(Boolean result) {
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить список категорий",
+						"РќРµСѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє РєР°С‚РµРіРѕСЂРёР№",
 						Toast.LENGTH_LONG).show();
 				tvNotify.setVisibility(View.INVISIBLE);
 				btnRep.setVisibility(View.VISIBLE);

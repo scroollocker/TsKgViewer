@@ -24,7 +24,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 	public void onBackPressed() {
 		if (backPressed == 0) {
 			Toast.makeText(getBaseContext(),
-					"Нажмите еще раз кнопку назад для выхода",
+					"РќР°Р¶РјРёС‚Рµ РµС‰Рµ СЂР°Р· РєРЅРѕРїРєСѓ РЅР°Р·Р°Рґ РґР»СЏ РІС‹С…РѕРґР°",
 					Toast.LENGTH_LONG).show();
 			backPressed++;
 		}
@@ -66,15 +66,15 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch(item.getItemId()) {
     		case R.id.wnew : {
-    			ProgressBar = ProgressDialog.show(MenuActivity.this, "Пожалуйста ждите...",
-    					  "Получение данных.... ", true, false);
+    			ProgressBar = ProgressDialog.show(MenuActivity.this, "Р—Р°РіСЂСѓР·РєР°....",
+    					  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ...", true, false);
     			new AsyncExecutionMenu().execute();
     			return super.onOptionsItemSelected(item);
     		}
     		case R.id.lastsee : {
     			if (tsEngine.getLastSeenCount() == 0) {
     				Toast.makeText(getBaseContext(),
-    						"Список пуст",
+    						"РЎРїРёСЃРѕРє РїСѓСЃС‚",
     						Toast.LENGTH_LONG).show();
     				return super.onOptionsItemSelected(item);
     			}
@@ -87,7 +87,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     		case R.id.favorites : {
     			if (tsEngine.getFavoritesCount() == 0) {
     				Toast.makeText(getBaseContext(),
-    						"Список пуст",
+    						"РЎРїРёСЃРѕРє РїСѓСЃС‚",
     						Toast.LENGTH_LONG).show();
     				return super.onOptionsItemSelected(item);
     			}
@@ -122,8 +122,8 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(MenuActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);		
+		ProgressBar = ProgressDialog.show(MenuActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ...", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
 
@@ -144,7 +144,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить список сериалов",
+						"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє СЃРµСЂРёР°Р»РѕРІ",
 						Toast.LENGTH_LONG).show();
 			}
 			else {
@@ -169,7 +169,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить список новых эпизодов",
+						"РќРµСѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє РЅРѕРІС‹С… СЌРїРёР·РѕРґРѕРІ",
 						Toast.LENGTH_LONG).show();
 			}
 			else {

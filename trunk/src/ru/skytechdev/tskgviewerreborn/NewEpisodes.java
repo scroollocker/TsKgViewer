@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import android.util.Log;
+
 public class NewEpisodes {
-	private String baseurl = "http://www.ts.kg/";
+	private String baseurl = "http://www.ts.kg";
 	private ArrayList<TSNewEpisodesItem> epiItems = new ArrayList<TSNewEpisodesItem>();
 	
 	public void clear() {
@@ -38,7 +40,7 @@ public class NewEpisodes {
 			epiItems.clear();
 		}
 		
-		Elements epiElements = doc.select("tbody").select("tr");
+		Elements epiElements = doc.select(".news");
 		
 		if (epiElements.size() == 0) {
 			return result;
@@ -53,15 +55,21 @@ public class NewEpisodes {
 				continue;
 			}
 			Elements epiItem = epiElements.get(i).select("a");
+			Elements comItem = epiElements.get(i).select("span");
 			if (epiItem.size() > 0) {
-				TSNewEpisodesItem epiNode = new TSNewEpisodesItem(); 
+				TSNewEpisodesItem epiNode = new TSNewEpisodesItem();
+				String link = epiItem.attr("href");
+				if (link.substring(0, 1).equals("/")) {
+					link = baseurl+link;
+				}
+				
 				epiNode.caption = epiItem.text();
-				epiNode.link = epiItem.attr("href");
+				epiNode.link = link;
 				if (!epiNode.link.matches(".*ts.kg.*")) {
 					continue;
 				}
 				epiNode.date = currDate;
-				Elements comItem = epiElements.get(i).select("span");
+				
 				if (comItem.size() > 0) {
 					epiNode.comment = comItem.text();
 				}

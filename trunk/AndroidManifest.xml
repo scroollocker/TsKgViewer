@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.skytechdev.tskgviewerreborn"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="7"
+    android:versionName="0.0.7" >
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -60,14 +60,6 @@
         <activity
             android:name="ru.skytechdev.tskgviewerreborn.AboutActivity"
             android:label="@string/title_activity_about" >
-        </activity>
-        <activity
-            android:name="ru.skytechdev.tskgviewerreborn.LastSeenActivity"
-            android:label="@string/title_activity_last_seen_new" >
-        </activity>
-        <activity
-            android:name="ru.skytechdev.tskgviewerreborn.NewEpiActivity"
-            android:label="@string/title_activity_new_epi_re" >
         </activity>
         <activity
             android:name="ru.skytechdev.tskgviewerreborn.FavoritesActivity"

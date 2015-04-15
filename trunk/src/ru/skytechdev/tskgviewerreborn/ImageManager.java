@@ -14,6 +14,8 @@ import android.widget.ImageView;
 public class ImageManager {	 
 	
 	  public Context context;
+	  private String base_url = "http://www.ts.kg";
+	  
 	  
 	  public ImageManager() {}
 	  public ImageManager(Context context) {
@@ -43,6 +45,10 @@ public class ImageManager {
 		    HttpURLConnection conn = null;
 		    BufferedInputStream buf_stream = null;
 
+		    if (url.substring(0,1).equals("/")) {
+		    	url = base_url+url;
+		    }
+		    
 			String fileName = parseFileName(url);
 
 			if (Cache.isExistInCache(context, fileName)) {

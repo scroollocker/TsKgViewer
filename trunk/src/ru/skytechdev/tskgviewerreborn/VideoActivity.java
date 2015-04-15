@@ -31,8 +31,8 @@ public class VideoActivity extends Activity {
 	
 	private void showProgressBar() {
 		progress = new ProgressDialog(VideoActivity.this);
-		progress.setTitle("Открытие");
-		progress.setMessage("Пожалуйста ждите...");
+		progress.setTitle("Р—Р°РіСЂСѓР·РєР°");
+		progress.setMessage("РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ...");
 		new AsyncTask<Void, Void, String>() {
 			
 			@Override
@@ -48,7 +48,7 @@ public class VideoActivity extends Activity {
 			
 			@Override
 			protected void onPostExecute(String result) {
-				progress.setTitle("Открытие");
+				progress.setTitle("Р—Р°РіСЂСѓР·РєР°");
 				progress.setMessage(result);				
 				progress.setCancelable(true);
 				
@@ -125,8 +125,8 @@ public class VideoActivity extends Activity {
 			progress.dismiss();
 			Log.d("Video","ERRR");
 			if (currTryCount < MAX_TRY_COUNT) {
-				Toast.makeText(VideoActivity.this, "Ошибка! Повторная попытка "+(currTryCount+1)+
-												   " из "+MAX_TRY_COUNT, Toast.LENGTH_LONG).show();
+				Toast.makeText(VideoActivity.this, "РћС€РёР±РєР° РїСЂРѕР±СѓРµРј РµС‰Рµ СЂР°Р·! РџРѕРїС‹С‚РєР°# "+(currTryCount+1)+
+												   " РёР· "+MAX_TRY_COUNT, Toast.LENGTH_LONG).show();
 				showProgressBar();
 				new AsyncExecution().execute(nowPlayed);
 				showProgressBar();
@@ -135,7 +135,7 @@ public class VideoActivity extends Activity {
 			}
 			else {
 				Log.d("Video","TRY ERR");
-				Toast.makeText(VideoActivity.this, "Ошибка! Исчерпаны все попытки", Toast.LENGTH_LONG).show();
+				Toast.makeText(VideoActivity.this, "РћС€РёР±РєР°! РџРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµРјСѓ СЌРїРёР·РѕРґСѓ!", Toast.LENGTH_LONG).show();
 				playNext();
 				currTryCount = 0;
 			}

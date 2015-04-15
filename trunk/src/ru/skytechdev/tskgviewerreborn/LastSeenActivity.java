@@ -29,8 +29,8 @@ public class LastSeenActivity extends Activity implements OnItemClickListener {
 		ListView lastSeenList = (ListView)findViewById(R.id.listView1);
 		lastSeenList.setOnItemClickListener(this);				
 		
-		ProgressBar = ProgressDialog.show(LastSeenActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);
+		ProgressBar = ProgressDialog.show(LastSeenActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);
 		
 		new AsyncImageLoader().execute();	
 	}
@@ -42,8 +42,8 @@ public class LastSeenActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(LastSeenActivity.this, "Пожалуйста ждите...",
-				  "Получение данных.... ", true, false);		
+		ProgressBar = ProgressDialog.show(LastSeenActivity.this, "Р—Р°РіСЂСѓР·РєР°...",
+				  "РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р¶РґРёС‚Рµ.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
 
@@ -68,7 +68,7 @@ public class LastSeenActivity extends Activity implements OnItemClickListener {
 			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
-						"Не удалось загрузить сериал",
+						"РќРѕРІРѕР·РјРѕР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРµСЂРёР°Р»!",
 						Toast.LENGTH_LONG).show();
 			}
 			else {
