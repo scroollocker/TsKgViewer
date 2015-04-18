@@ -28,7 +28,7 @@ public class Menu {
 		boolean result = false;
 		Document doc = null;
 		
-		doc = HttpWrapper.getHttpDoc(baseurl);
+		doc = HttpWrapper.getHttpDoc(baseurl+"/show");
 		if (doc == null) {
 			return result;
 		}
@@ -37,31 +37,28 @@ public class Menu {
 			menuItems.clear();
 		}
 				
-		Elements menuElements = doc.select(".footer-links").select("a");
-		if (menuElements.size() > 0) {
+		Elements menuElements = doc.select("select#filter-category").select("option");
+		if (menuElements.size() > 0) { 
+	    		    	
 			for (int i = 0; i < menuElements.size(); i++) {
-				String link = menuElements.get(i).attr("href");
+				String value = menuElements.get(i).attr("value");
+				if (value.equals("0")) {
+					/* пропуск пункта "все категории" */
+					continue;
+				}
+				String link = baseurl+"/show?category="+value+"&genre=0&star=0&sort=a&zero=0&year=0";
 				String caption = menuElements.get(i).text();
-				if (link.indexOf("/show/") != -1) {
-					TSMenuItem item = new TSMenuItem();
-					if (link.substring(0,1).equals("/")) {
-						link = baseurl + link;
-					}
-					
+				
+					TSMenuItem item = new TSMenuItem();									
 					item.url = link;
 					item.value = caption;
 					addItem(item);
-				}
+				
 			}
-			/* for kidi fix */
-			TSMenuItem item = new TSMenuItem();
-			item.url = "http://www.ts.kg/show/?category=3&sort=a";
-			item.value = "Для детей";
-			addItem(item);
 			
 			result = true;
-		}		
-		
+		}	
+				
 		return result;
 	}
 	

@@ -64,14 +64,6 @@ public class VideoUrlGenerator {
 		
 		result = jsObj;
 		
-		/*JSONObject file = (JSONObject) jsObj.get("file");
-		
-		if (file == null) {
-			return result;
-		}
-		
-		result = (HashMap<String,String>) file;
-		*/
 		return result;		
 	}
 	
@@ -133,14 +125,7 @@ public class VideoUrlGenerator {
 	public String makeSerialPrev(String url) {
 		
 		String result = "";
-		/*String id = getEpiID(url);
-		HashMap<String, String> dataResp = getEpisodAjaxResponse(id,url);
-		
-		if (dataResp == null) {
-			return result;
-		}
-		*/
-		result = "Загрузка сериала...";//dataResp.get("sname")+" | �����: "+dataResp.get("season")+" | ������: "+dataResp.get("alias");
+		result = "Загрузка сериала...";
 		
 		return result;
 	}

@@ -43,19 +43,6 @@ public class LastSeen {
 		catch (ClassNotFoundException e) {
 
 		} 
-		/*
-		seenList.clear();
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-	    int itemCount = sp.getInt("ls_ItemCount", 0);
-	    for (int i = 0; i < itemCount; i++) {
-	    	TSItem item = new TSItem();//seenList.get(i);
-	    	item.value = sp.getString("ls_Caption_"+i, "");
-	    	item.url = sp.getString("ls_Url_"+i, "");
-	    	item.imgurl = sp.getString("ls_Img_"+i, "");
-	    	
-	    	seenList.add(item);
-	    }
-	    */
 		
 	}
 	

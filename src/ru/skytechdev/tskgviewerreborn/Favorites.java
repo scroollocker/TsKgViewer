@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ru.skytechdev.tskgviewerreborn.R.string;
 import android.content.Context;
 
 public class Favorites {

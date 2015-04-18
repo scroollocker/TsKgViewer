@@ -113,13 +113,6 @@ public class SerialInfo {
 			
 		}
 		
-		//img = doc.select("img.serial_cover").attr("src");		
-		//caption = doc.select("title").text();
-		
-		//if (!caption.isEmpty()) {
-		//	caption = caption.replace("TS.KG - ", "");
-		//}
-		
 		Elements serialElement = doc.select("section");
 		
 		if (serialElement.size() > 0) {			

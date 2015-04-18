@@ -41,7 +41,8 @@ public class Serials {
 			serialList.clear();
 		}
 		
-		String pagePart = "";
+		String prevUrl = "";
+		String nextUrl = "";
 		
 		do {
 			Elements serialElements = doc.select("div.shows").select("a");
@@ -68,13 +69,21 @@ public class Serials {
 					addSerial(item);
 				}
 			}
+						
 			
 			if (next_page == null) {
 				break;
 			}
-			
-			pagePart = "&page="+next_page.text();									
-			doc = HttpWrapper.getHttpDoc(url+pagePart);
+			else {
+				nextUrl = base_url+next_page.attr("href");
+				if (nextUrl.equals(prevUrl)) {
+					break;
+				}
+				else {
+					prevUrl = nextUrl;
+					doc = HttpWrapper.getHttpDoc(nextUrl);
+				}
+			}			
 			
 		} while(true);
 		

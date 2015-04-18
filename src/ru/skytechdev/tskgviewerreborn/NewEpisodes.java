@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import android.util.Log;
-
 public class NewEpisodes {
 	private String baseurl = "http://www.ts.kg";
 	private ArrayList<TSNewEpisodesItem> epiItems = new ArrayList<TSNewEpisodesItem>();
