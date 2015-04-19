@@ -111,8 +111,8 @@ public class Favorites {
 		}
 	}
 	
-	public String parseSerialName(String url) {
-		Pattern serialCaptionPattern = Pattern.compile("(show/)([a-z_]*)");  
+	public static String parseSerialName(String url) {
+		Pattern serialCaptionPattern = Pattern.compile("(show/)([a-z0-9_.]*)");  
     	Matcher matcher = serialCaptionPattern.matcher(url);
     	
     	String serialName = "";

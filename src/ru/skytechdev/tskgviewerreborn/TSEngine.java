@@ -90,8 +90,8 @@ public class TSEngine {
 			}			
 			String url = serialList.getSerialById(id).url;
 			selectSerial(url);
-			if (isSerialSelect) {
-			}			
+			//if (isSerialSelect) {
+			//}			
 		}
 		
 		public void selectSerial(String url) {
