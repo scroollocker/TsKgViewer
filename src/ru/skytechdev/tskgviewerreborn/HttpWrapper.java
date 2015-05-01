@@ -47,6 +47,7 @@ public class HttpWrapper {
 					.header("Accept", "application/json, text/javascript, */*; q=0.01")
 					.header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")					
 					.header("Referer", refer)
+					.header("X-Requested-With", "XMLHttpRequest")
 					.ignoreContentType(true)
 					.userAgent("Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:35.0) Gecko/20100101 Firefox/35.0")
 					.data(data)
