@@ -4,18 +4,29 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import ru.skytechdev.tskgviewerreborn.categories.TsCategoryItem;
 import ru.skytechdev.tskgviewerreborn.utils.HttpWrapper;
 import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 import android.util.Log;
 
 public class SerialInfo {
+	
+	private static SerialInfo instance = null;
+	
 	private String caption;
 	private String img;
 	private String url;
 	private ArrayList<TsSeasonItem> seasons = new ArrayList<TsSeasonItem>();
 	private String discription;
-	// String base_url = "http://www.ts.kg";
+	
+	private SerialInfo() {}
+	
+	public static SerialInfo getInstance() {
+		if (instance == null) {
+			instance = new SerialInfo();			
+		}
+		
+		return instance;
+	}
 	
 	public void clear() {
 		seasons.clear();
@@ -24,23 +35,17 @@ public class SerialInfo {
 	public String getCaption() {
 		return caption;
 	}
+	
 	public String getUrl() {
 		return url;
 	}
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
+	
 	public String getImg() {
 		return img;
 	}
-	public void setImg(String img) {
-		this.img = img;
-	}
+	
 	public String getDiscription() {
 		return discription;
-	}
-	public void setDiscription(String discription) {
-		this.discription = discription;
 	}	
 	
 	public int getSeasonCount() {
@@ -54,7 +59,7 @@ public class SerialInfo {
 		return seasons.get(seasonid).episodes.size();
 	}
 	
-	public void addEpisodes(String cap, ArrayList<TsCategoryItem> val) {
+	private void addEpisodes(String cap, ArrayList<TsEpisodeItem> val) {
 		TsSeasonItem item = new TsSeasonItem();
 		item.caption = cap;
 		item.episodes = val;
@@ -75,18 +80,26 @@ public class SerialInfo {
 		return seasons.get(id).caption;
 	}
 	
-	public TsCategoryItem getEpisode(int seasonid, int episodeid) {
+	public TsEpisodeItem getEpisode(int seasonid, int episodeid) {
 		if (seasonid < 0 || seasonid >= getSeasonCount() || getSeasonCount() == 0) {
-			return new TsCategoryItem();
+			return new TsEpisodeItem();
 		}		
 		if (episodeid < 0 || episodeid >= getEpisodesCount(seasonid) || getEpisodesCount(seasonid) == 0) {
-			return new TsCategoryItem();
+			return new TsEpisodeItem();
 		}
 		
 		return seasons.get(seasonid).episodes.get(episodeid);
 	}
 	
-	public boolean parseSerialInfo(String url) {
+	public boolean loadSerialInfo(String url) {
+		boolean result = false;
+		
+		result = parseSerialInfo(url);
+		
+		return result;
+	}
+	
+	private boolean parseSerialInfo(String url) {
 		boolean result = false;
 		Document doc = null;
 		
@@ -123,15 +136,15 @@ public class SerialInfo {
 				String epiCaption;
 				Elements episodes = serialElement.get(i).select("a");
 				epiCaption = serialElement.get(i).select("h3").text();
-				ArrayList<TsCategoryItem> epiItem = new ArrayList<TsCategoryItem>(); 
+				ArrayList<TsEpisodeItem> epiItem = new ArrayList<TsEpisodeItem>(); 
 				for (int j = 0; j < episodes.size(); j++) {
-					TsCategoryItem item = new TsCategoryItem();
+					TsEpisodeItem item = new TsEpisodeItem();
 					String link = episodes.get(j).attr("href");
 					if (link.substring(0, 1).equals("/")) {
 						link = TsUtils.getBasePath() + link;
 					}
-					item.name = link;
-					item.value = episodes.get(j).text();
+					item.url = link;
+					item.caption = episodes.get(j).text();
 					epiItem.add(item);
 				}
 				if (epiItem.size() > 0) {

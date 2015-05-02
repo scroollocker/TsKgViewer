@@ -1,5 +1,7 @@
-package ru.skytechdev.tskgviewerreborn;
+package ru.skytechdev.tskgviewerreborn.activity;
 
+import ru.skytechdev.tskgviewerreborn.R;
+import ru.skytechdev.tskgviewerreborn.categories.Categories;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -11,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
-	private static TSEngine tsEngine = new TSEngine();
 	
 	public static boolean isExit = false;
 	
@@ -46,8 +47,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		protected Boolean doInBackground(Void... arg0) {
 			boolean result = false;
-			tsEngine.init(getBaseContext());			
-			result = tsEngine.isMenuLoaded();			
+			/*tsEngine.init(getBaseContext());			
+			result = tsEngine.isMenuLoaded();
+			*/
+			
+			Categories categoryies = Categories.getInstance();
+			
+			result = categoryies.loadCategories(false);
+			
 			return result;
 		}
     	
@@ -61,7 +68,6 @@ public class MainActivity extends Activity implements OnClickListener {
 				btnRep.setVisibility(View.VISIBLE);
 			}
 			else {
-				MenuActivity.tsEngine = tsEngine;
 				Intent intent = new Intent(MainActivity.this, MenuActivity.class);
 				startActivity(intent);				
 			}

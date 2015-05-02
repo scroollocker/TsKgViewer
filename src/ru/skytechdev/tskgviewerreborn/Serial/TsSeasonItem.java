@@ -6,5 +6,5 @@ import ru.skytechdev.tskgviewerreborn.categories.TsCategoryItem;
 
 public class TsSeasonItem {
 	public String caption;
-	public ArrayList<TsCategoryItem> episodes = new ArrayList<TsCategoryItem>();
+	public ArrayList<TsEpisodeItem> episodes = new ArrayList<TsEpisodeItem>();
 }
