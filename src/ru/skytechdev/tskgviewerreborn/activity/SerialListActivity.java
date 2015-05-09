@@ -3,7 +3,8 @@ package ru.skytechdev.tskgviewerreborn.activity;
 import ru.skytechdev.tskgviewerreborn.R;
 import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.Serial.SerialsList;
-import ru.skytechdev.tskgviewerreborn.Serial.TsSerialItem;
+import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -30,7 +31,7 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 		serialsItems.setOnItemClickListener(this);
 		
 		
-		SerialsList serials = SerialsList.getInstance();
+		SerialsList serials = TsEngine.getInstance().getSerialList();
 		
 		int serialsCount = serials.getSerialsCount();
 		
@@ -69,11 +70,11 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 		protected Boolean doInBackground(Integer... arg0) {
 			boolean result = false;
 			
-			SerialsList serials = SerialsList.getInstance();
+			SerialsList serials = TsEngine.getInstance().getSerialList();
 			
 			TsSerialItem serial = serials.getSerialById(arg0[0]);
 			
-			result = SerialInfo.getInstance().loadSerialInfo(serial.url);
+			result = TsEngine.getInstance().loadSerialInfo(serial.url);
 			
 			return result;
 		}

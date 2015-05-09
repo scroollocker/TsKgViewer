@@ -4,29 +4,19 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import ru.skytechdev.tskgviewerreborn.structs.TsEpisodeItem;
+import ru.skytechdev.tskgviewerreborn.structs.TsSeasonItem;
 import ru.skytechdev.tskgviewerreborn.utils.HttpWrapper;
 import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 import android.util.Log;
 
 public class SerialInfo {
-	
-	private static SerialInfo instance = null;
-	
+		
 	private String caption;
 	private String img;
 	private String url;
 	private ArrayList<TsSeasonItem> seasons = new ArrayList<TsSeasonItem>();
 	private String discription;
-	
-	private SerialInfo() {}
-	
-	public static SerialInfo getInstance() {
-		if (instance == null) {
-			instance = new SerialInfo();			
-		}
-		
-		return instance;
-	}
 	
 	public void clear() {
 		seasons.clear();

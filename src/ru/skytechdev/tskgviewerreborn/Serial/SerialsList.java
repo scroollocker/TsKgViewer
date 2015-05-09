@@ -6,26 +6,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import ru.skytechdev.tskgviewerreborn.categories.CategoryHelper;
+import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
+import ru.skytechdev.tskgviewerreborn.structs.TsSortEnum;
 import ru.skytechdev.tskgviewerreborn.utils.HttpWrapper;
-import ru.skytechdev.tskgviewerreborn.utils.TsSortEnum;
 import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 
 
 public class SerialsList {
 	
-	private static SerialsList instance = null;
 	private ArrayList<TsSerialItem> serialList = new ArrayList<TsSerialItem>();
 	private String lastCatId = "";
-	
-	private SerialsList() {}
-	
-	public static SerialsList getInstance() {
-		if (instance == null) {
-			instance = new SerialsList();			
-		}
-		
-		return instance;
-	}
 	
 	public void clear() {
 		serialList.clear();

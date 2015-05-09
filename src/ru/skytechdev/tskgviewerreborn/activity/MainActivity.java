@@ -2,6 +2,7 @@ package ru.skytechdev.tskgviewerreborn.activity;
 
 import ru.skytechdev.tskgviewerreborn.R;
 import ru.skytechdev.tskgviewerreborn.categories.Categories;
+import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,6 +30,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		btnRep.setVisibility(View.INVISIBLE);
 		btnRep.setOnClickListener(this);
 		isExit = false;
+		
+		TsEngine.getInstance().initEngine(MainActivity.this);
     }
     
     @Override
@@ -47,13 +50,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		protected Boolean doInBackground(Void... arg0) {
 			boolean result = false;
-			/*tsEngine.init(getBaseContext());			
-			result = tsEngine.isMenuLoaded();
-			*/
+						
+			Categories categoryies = TsEngine.getInstance().getCategories();
 			
-			Categories categoryies = Categories.getInstance();
-			
-			result = categoryies.loadCategories(false);
+			if (categoryies.getItemCount() > 0) {
+				result = categoryies.loadCategories(true);
+			}
+			else {
+				result = categoryies.loadCategories(false);
+			}
 			
 			return result;
 		}

@@ -1,4 +1,4 @@
-package ru.skytechdev.tskgviewerreborn.utils;
+package ru.skytechdev.tskgviewerreborn.structs;
 
 public enum TsSortEnum {
 	SORT_A,

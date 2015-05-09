@@ -1,4 +1,4 @@
-package ru.skytechdev.tskgviewerreborn.categories;
+package ru.skytechdev.tskgviewerreborn.structs;
 
 public class TsCategoryItem {
 	public String name;

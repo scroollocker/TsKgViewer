@@ -1,7 +1,5 @@
-package ru.skytechdev.tskgviewerreborn.Serial;
+package ru.skytechdev.tskgviewerreborn.structs;
 import java.util.ArrayList;
-
-import ru.skytechdev.tskgviewerreborn.categories.TsCategoryItem;
 
 
 public class TsSeasonItem {

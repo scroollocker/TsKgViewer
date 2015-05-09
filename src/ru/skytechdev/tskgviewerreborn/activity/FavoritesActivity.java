@@ -1,0 +1,118 @@
+package ru.skytechdev.tskgviewerreborn.activity;
+
+import ru.skytechdev.tskgviewerreborn.R;
+import ru.skytechdev.tskgviewerreborn.adapters.TsFavoritesAdapter;
+import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.structs.TsBitmapItem;
+import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
+import ru.skytechdev.tskgviewerreborn.utils.Favorites;
+import ru.skytechdev.tskgviewerreborn.utils.ImageManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+public class FavoritesActivity extends Activity implements OnItemClickListener {
+	private ProgressDialog ProgressBar;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_favorites);
+		ListView favList = (ListView)findViewById(R.id.listView1);
+		favList.setOnItemClickListener(this);		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return true;
+	}
+	
+	@Override 
+	public void onStart() {
+		super.onStart();
+		
+		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Загрузка...",
+				  "Пожалуйста ждите.... ", true, false);
+		new AsyncImageLoader().execute();
+	}
+		
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Загрузка...",
+				  "Пожалуйста ждите.... ", true, false);		
+		new AsyncExecution().execute(arg2);
+	}
+
+    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Integer... arg0) {
+			boolean result = false;
+			
+			String url = Favorites.getInstance().getItem(arg0[0]).url;
+			
+			result = TsEngine.getInstance().loadSerialInfo(url);
+			
+			return result;
+		}
+    	
+		@Override
+		protected void onPostExecute(Boolean result) {
+			ProgressBar.dismiss();
+			if (!result) {
+				Toast.makeText(getBaseContext(),
+						"Невозможно открыть сериал!",
+						Toast.LENGTH_LONG).show();
+			}
+			else {
+				Intent intent = new Intent(FavoritesActivity.this, SerialActivity.class);
+				startActivity(intent);								
+			}
+		}
+    }	
+
+    class AsyncImageLoader extends AsyncTask<Void, Void, Void> {
+    	TsBitmapItem[] items;
+    	
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			
+			int favCount = Favorites.getInstance().getCount();
+			
+			items = new TsBitmapItem[favCount];	
+			
+			TsSerialItem item;
+			Bitmap btm;
+			for (int i = 0; i < favCount; i++) {
+				item = Favorites.getInstance().getItem(i);
+				btm = (new ImageManager(getBaseContext()).getBitmap(item.imgurl));
+				items[i] = new TsBitmapItem(item,btm);
+			}
+			
+			return null;			
+		}
+    	
+		@Override
+		protected void onPostExecute(Void result) {
+			ProgressBar.dismiss();
+			if (items.length == 0) {
+				return;
+			}
+			ListView favList = (ListView)findViewById(R.id.listView1);
+			
+			TsFavoritesAdapter favAdapter = new TsFavoritesAdapter(FavoritesActivity.this,items);
+			
+			favList.setAdapter(favAdapter);
+		}
+    }     
+    
+}

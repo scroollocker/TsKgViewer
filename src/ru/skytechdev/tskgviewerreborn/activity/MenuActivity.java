@@ -3,7 +3,10 @@ package ru.skytechdev.tskgviewerreborn.activity;
 import ru.skytechdev.tskgviewerreborn.R;
 import ru.skytechdev.tskgviewerreborn.Serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.categories.Categories;
-import ru.skytechdev.tskgviewerreborn.categories.TsCategoryItem;
+import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.structs.TsCategoryItem;
+import ru.skytechdev.tskgviewerreborn.utils.Favorites;
+import ru.skytechdev.tskgviewerreborn.utils.RecentSerials;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -50,7 +53,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 		ListView MenuList = (ListView)findViewById(R.id.listView1);
 		MenuList.setOnItemClickListener(this);		
 		
-		Categories categories = Categories.getInstance();
+		Categories categories = TsEngine.getInstance().getCategories();
 		
 		int categoriesLen = categories.getItemCount();
 		
@@ -80,31 +83,36 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     			return super.onOptionsItemSelected(item);
     		}
     		case R.id.lastsee : {
-    			/*if (tsEngine.getLastSeenCount() == 0) {
+    			RecentSerials recent = RecentSerials.getInstance();    				
+    			
+    			if (recent.getCount() == 0) {
     				Toast.makeText(getBaseContext(),
     						"Список пуст",
     						Toast.LENGTH_LONG).show();
     				return super.onOptionsItemSelected(item);
     			}
-    			LastSeenActivity.tsEngine = tsEngine;
+    			
 				backPressed = 0;
-				Intent intent = new Intent(MenuActivity.this, LastSeenActivity.class);
+				
+				Intent intent = new Intent(MenuActivity.this, RecentSerialsActivity.class);
 				startActivity(intent);
-				*/
+				
 				return super.onOptionsItemSelected(item);
     		}    
     		case R.id.favorites : {
-    			/*if (tsEngine.getFavoritesCount() == 0) {
+    			Favorites favorites = Favorites.getInstance();
+    			
+    			if (favorites.getCount() == 0) {
     				Toast.makeText(getBaseContext(),
     						"Список пуст",
     						Toast.LENGTH_LONG).show();
     				return super.onOptionsItemSelected(item);
     			}
-    			FavoritesActivity.tsEngine = tsEngine;
+    			
 				backPressed = 0;
 				Intent intent = new Intent(MenuActivity.this, FavoritesActivity.class);
 				startActivity(intent);
-				*/
+				
 				return super.onOptionsItemSelected(item);
     		}      		
     		case R.id.search: {
@@ -123,10 +131,10 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     			return super.onOptionsItemSelected(item);
     		}    		
     		case R.id.about: {
-				/*backPressed = 0;
+				backPressed = 0;
 				Intent intent = new Intent(MenuActivity.this, AboutActivity.class);
 				startActivity(intent);
-				*/
+				
     			return super.onOptionsItemSelected(item);
     		}
     	}
@@ -145,12 +153,11 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 		@Override
 		protected Boolean doInBackground(Integer... arg0) {
 			boolean result = false;
-			Categories categories = Categories.getInstance();
+			Categories categories = TsEngine.getInstance().getCategories();
 			
 			TsCategoryItem category = categories.getItemById(arg0[0]);
 			
-			SerialsList serials = SerialsList.getInstance();
-			result = serials.loadSerialsList(category.value, false);
+			result = TsEngine.getInstance().loadSerialList(category.value);
 			
 			return result;
 		}

@@ -4,25 +4,14 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import ru.skytechdev.tskgviewerreborn.structs.TsCategoryItem;
 import ru.skytechdev.tskgviewerreborn.utils.HttpWrapper;
 import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 
 
 public class Categories {
-	
-	private static Categories instance = null;
 	private ArrayList<TsCategoryItem> menuItems = new ArrayList<TsCategoryItem>();
-	
-	private Categories() {}
-	
-	public static Categories getInstance() {
-		if (instance == null) {
-			instance = new Categories();			
-		}
 		
-		return instance;
-	}
-	
 	public TsCategoryItem getItemById(int id) {
 		if (menuItems.size() == 0 || id < 0 || id >= menuItems.size()) {
 			return new TsCategoryItem();
@@ -40,9 +29,12 @@ public class Categories {
 	
 	public boolean loadCategories(boolean cache) {
 		boolean result = false;
-		if (cache) {
+		if (cache) {			
 			if (getItemCount() == 0) {
 				result = parseMenu();				
+			}		
+			else {
+				result = true;
 			}
 		}
 		else {

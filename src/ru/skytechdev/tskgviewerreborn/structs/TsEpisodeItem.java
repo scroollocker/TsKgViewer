@@ -1,4 +1,4 @@
-package ru.skytechdev.tskgviewerreborn.Serial;
+package ru.skytechdev.tskgviewerreborn.structs;
 
 public class TsEpisodeItem {
 	public String caption;

@@ -1,4 +1,4 @@
-package ru.skytechdev.tskgviewerreborn;
+package ru.skytechdev.tskgviewerreborn.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,14 +8,24 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 import android.content.Context;
 
 public class Favorites {
-	private ArrayList<TSItem> favList = new ArrayList<TSItem>();
+	private ArrayList<TsSerialItem> favList = new ArrayList<TsSerialItem>();
 	private Context context;
+	
+	private static Favorites instance = null;
+	
+	private Favorites() { } 
+	
+	public static Favorites getInstance() {
+		if (instance == null) {
+			instance = new Favorites();			
+		}
+		return instance;
+	}
 	
 	public void setContext(Context context) {
 		this.context = context;
@@ -28,9 +38,9 @@ public class Favorites {
 		try {
 			ObjectInputStream favStream = new ObjectInputStream(new FileInputStream(favFile));
 			
-			ArrayList<TSItem> readObject = (ArrayList<TSItem>)favStream.readObject();
+			ArrayList<TsSerialItem> readObject = (ArrayList<TsSerialItem>)favStream.readObject();
 			if (readObject == null) {
-				favList = new ArrayList<TSItem>();
+				favList = new ArrayList<TsSerialItem>();
 			}
 			else {
 				favList = readObject;
@@ -71,14 +81,14 @@ public class Favorites {
 		favList.clear();
 	}
 	
-	public boolean isExist(TSItem item) {
+	public boolean isExist(String url) {
 		boolean result = false;
 		for (int i = 0; i < getCount(); i++) {			
-			String url1 = item.url;			
+			String url1 = url;			
 			String url2 = getItem(i).url;
 			
-			url1 = parseSerialName(url1);
-			url2 = parseSerialName(url2);
+			url1 = TsUtils.parseSerialName(url1);
+			url2 = TsUtils.parseSerialName(url2);
 			
 			if (!url1.isEmpty() && !url2.isEmpty()) {			
 				if (url1.equals(url2)) {
@@ -90,18 +100,55 @@ public class Favorites {
 		return result;
 	}
 	
-	public void delete(TSItem item) {
+	public boolean isExist(TsSerialItem item) {
+		boolean result = false;
+		for (int i = 0; i < getCount(); i++) {			
+			String url1 = item.url;			
+			String url2 = getItem(i).url;
+			
+			url1 = TsUtils.parseSerialName(url1);
+			url2 = TsUtils.parseSerialName(url2);
+			
+			if (!url1.isEmpty() && !url2.isEmpty()) {			
+				if (url1.equals(url2)) {
+					result = true;
+					break;
+				}
+			}			
+		}
+		return result;
+	}
+	
+	public void delete(String capt, String url, String imgUrl) {
+		TsSerialItem item = new TsSerialItem();
+		item.value = capt;
+		item.url = url;
+		item.imgurl = imgUrl;
+		
+		this.delete(item);
+	}
+	
+	public void delete(TsSerialItem item) {
 		favList.remove(item);
 	}
 	
-	public TSItem getItem(int id) {
+	public TsSerialItem getItem(int id) {
 		if (id < 0 || id >= getCount() || getCount() == 0 ) {
-			return new TSItem();
+			return new TsSerialItem();
 		}
 		return favList.get(id);
 	}
 	
-	public void add(TSItem val) {
+	public void add(String capt, String url, String imgUrl) {
+		TsSerialItem item = new TsSerialItem();
+		item.value = capt;
+		item.url = url;
+		item.imgurl = imgUrl;
+		
+		this.add(item);
+	}
+	
+	public void add(TsSerialItem val) {
 		if (getCount() == 0) {
 			favList.add(val);
 			return;
@@ -109,23 +156,6 @@ public class Favorites {
 		if (!favList.equals(val)) {
 			favList.add(val);
 		}
-	}
-	
-	public static String parseSerialName(String url) {
-		Pattern serialCaptionPattern = Pattern.compile("(show/)([a-z0-9_.]*)");  
-    	Matcher matcher = serialCaptionPattern.matcher(url);
-    	
-    	String serialName = "";
-    	
-    	if(matcher.find()){  
-    		serialName = matcher.group(2);   
-    	} 
-    	
-    	if (serialName == null) {
-    		serialName = "";
-    	}
-		
-    	return serialName;
 	}
 	
 }

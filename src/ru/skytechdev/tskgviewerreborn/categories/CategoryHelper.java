@@ -1,6 +1,6 @@
 package ru.skytechdev.tskgviewerreborn.categories;
 
-import ru.skytechdev.tskgviewerreborn.utils.TsSortEnum;
+import ru.skytechdev.tskgviewerreborn.structs.TsSortEnum;
 import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 
 public class CategoryHelper {
