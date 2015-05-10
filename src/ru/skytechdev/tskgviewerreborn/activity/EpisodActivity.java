@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,8 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 	private ProgressDialog ProgressBar;
 	private int seasonId;
 	
+	private final String LogTag = "EpisodActivity::LOG";
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -36,12 +39,16 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 		SerialInfo serialInfo = TsEngine.getInstance().getSerialInfo();
 		int epiCount = serialInfo.getEpisodesCount(seasonId);		
 		
+		if (epiCount == 0) {
+			Log.d(LogTag, "ERR::epiCount == 0");
+			return;
+		}
+		
 		TsRecentItem[] episodes = new TsRecentItem[epiCount];
 		SerialInfo serial = TsEngine.getInstance().getSerialInfo();
 		String serialUrl = serial.getUrl();
 		
-		RecentEpisodes.getInstance().loadSerialAct(serialUrl);
-		
+		RecentEpisodes.getInstance().loadSerialAct(serialUrl);		
 		
 		for (int i = 0; i < epiCount; i++) {
 			episodes[i] = new TsRecentItem();
@@ -70,21 +77,22 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
 		ProgressBar = ProgressDialog.show(EpisodActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);			
-		new AsyncExecution().execute(arg2);
+		new PlaylistMakerTask().execute(itemId);
 	}
 	
-	class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+	class PlaylistMakerTask extends AsyncTask<Integer, Void, Boolean> {
 		private ArrayList<String> playlist = new ArrayList<String>(); 
 		private TsEngine engine;
+		
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {			
+		protected Boolean doInBackground(Integer... itemId) {			
 			boolean result = false;	
 			String url = "";
 			engine = TsEngine.getInstance();
-			int selectedPos = arg0[0];
+			int selectedPos = itemId[0];
 			SerialInfo serial = TsEngine.getInstance().getSerialInfo();
 			if (engine.useDefaultPlayer()) {
 				playlist.clear();
@@ -102,9 +110,8 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 				}
 			}
 			else {
-				url = serial.getEpisode(seasonId, selectedPos).url;				
-				//VideoUrlGenerator urlGen = new VideoUrlGenerator();
-				url = EpisodeHelper.getInstance().makeVideoUrl(url);//urlGen.makeVideoUrl(url);				
+				url = serial.getEpisode(seasonId, selectedPos).url;
+				url = EpisodeHelper.getInstance().makeVideoUrl(url);				
 				if (!url.isEmpty()) {
 					playlist.add(url);
 					result = true;
@@ -122,8 +129,7 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 						Toast.LENGTH_LONG).show();
 				return;
 			}
-			if (engine.useDefaultPlayer()) {
-				//VideoActivity.playlist = playlist;				
+			if (engine.useDefaultPlayer()) {				
 				Intent intent = new Intent(EpisodActivity.this, VideoActivity.class);
 				intent.putExtra(TsEngine.TS_PLAYLIST_EXTRA_STR, playlist);
 				startActivity(intent);

@@ -5,11 +5,10 @@ import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import ru.skytechdev.tskgviewerreborn.serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.utils.Favorites;
 import ru.skytechdev.tskgviewerreborn.utils.ImageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,14 +18,11 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SerialActivity extends Activity implements OnItemClickListener, OnClickListener {
-
-	private ProgressDialog ProgressBar;
 	private boolean isInFavorites = false;
-	
+	private final String LogTag = "SerialActivity::LOG";
 	
 	@Override
 	protected void onStart() {
@@ -69,6 +65,11 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 		
 		int seasonCount = serial.getSeasonCount();
 		
+		if (seasonCount == 0) {
+			Log.d(LogTag, "ERR::seasonCount == 0");
+			return;
+		}
+		
 		String seasonItem [] = new String[seasonCount];
 		String epiCountItem [] = new String[seasonCount];
 		int epiCount;
@@ -95,31 +96,14 @@ public class SerialActivity extends Activity implements OnItemClickListener, OnC
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(SerialActivity.this, "Загрузка...",
-				  "Пожалуйста ждите.... ", true, false);		
-		new AsyncExecution().execute(arg2);
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
+		Intent intent = new Intent(SerialActivity.this, EpisodActivity.class);
+		intent.putExtra(TsEngine.TS_SEASON_EXTRA_STR, itemId);
+		startActivity(intent);
 	}
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Integer> {
-
-		@Override
-		protected Integer doInBackground(Integer... arg0) {
-			Integer result = arg0[0];
-			return result;
-		}
-    	
-		@Override
-		protected void onPostExecute(Integer result) {
-			ProgressBar.dismiss();
-			Intent intent = new Intent(SerialActivity.this, EpisodActivity.class);
-			intent.putExtra(TsEngine.TS_SEASON_EXTRA_STR, result.intValue());
-			startActivity(intent);
-		}
-    }
-
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View notUse) {
 		ImageView starImg = (ImageView)findViewById(R.id.fv_img);
 		TextView starText = (TextView)findViewById(R.id.fv_caption);
 		

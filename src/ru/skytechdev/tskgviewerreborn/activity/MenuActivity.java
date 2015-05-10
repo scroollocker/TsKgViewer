@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,15 +29,16 @@ import android.widget.Toast;
 public class MenuActivity extends Activity implements OnItemClickListener {
 
 	private ProgressDialog ProgressBar;
-	private int  backPressed = 0;
-
+	private int  backPressCount = 0;
+	private final String LogTag = "MenuActivity::LOG";
+	
 	@Override
 	public void onBackPressed() {
-		if (backPressed == 0) {
+		if (backPressCount == 0) {
 			Toast.makeText(getBaseContext(),
 					"Нажмите еще раз кнопку назад для выхода",
 					Toast.LENGTH_LONG).show();
-			backPressed++;
+			backPressCount++;
 		}
 		else {
 			setResult(RESULT_OK);
@@ -60,6 +62,11 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 		
 		int categoriesLen = categories.getItemCount();
 		
+		if (categoriesLen == 0) {
+			Log.d(LogTag, "ERR::categoriesLen == 0");
+			return;
+		}
+		
 		String menuElements[];
 		menuElements = new String[categoriesLen];
 		
@@ -82,7 +89,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     		case R.id.wnew : {
     			ProgressBar = ProgressDialog.show(MenuActivity.this, "Загрузка....",
     					  "Пожалуйста ждите...", true, false);
-    			new AsyncExecutionMenu().execute();
+    			new RecentAddLoaderTask().execute();
     			return super.onOptionsItemSelected(item);
     		}
     		case R.id.lastsee : {
@@ -95,8 +102,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     				return super.onOptionsItemSelected(item);
     			}
     			
-				backPressed = 0;
-				
+				backPressCount = 0;				
 				Intent intent = new Intent(MenuActivity.this, RecentSerialsActivity.class);
 				startActivity(intent);
 				
@@ -112,28 +118,28 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     				return super.onOptionsItemSelected(item);
     			}
     			
-				backPressed = 0;
+    			backPressCount = 0;
 				Intent intent = new Intent(MenuActivity.this, FavoritesActivity.class);
 				startActivity(intent);
 				
 				return super.onOptionsItemSelected(item);
     		}      		
     		case R.id.search: {
-				backPressed = 0;
+				backPressCount = 0;
 				Intent intent = new Intent(MenuActivity.this, SearchActivity.class);
 				startActivity(intent);
 				
     			return super.onOptionsItemSelected(item);
     		}
     		case R.id.sett: {
-				backPressed = 0;
+				backPressCount = 0;
 				Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
 				startActivity(intent);
 				
     			return super.onOptionsItemSelected(item);
     		}    		
     		case R.id.about: {
-				backPressed = 0;
+				backPressCount = 0;
 				Intent intent = new Intent(MenuActivity.this, AboutActivity.class);
 				startActivity(intent);
 				
@@ -144,20 +150,20 @@ public class MenuActivity extends Activity implements OnItemClickListener {
     }
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
 		ProgressBar = ProgressDialog.show(MenuActivity.this, "Загрузка...",
 				  "Пожалуйста ждите...", true, false);		
-		new AsyncExecution().execute(arg2);
+		new SerialListLoaderTask().execute(itemId);
 	}
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+    class SerialListLoaderTask extends AsyncTask<Integer, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... itemId) {
 			boolean result = false;
 			Categories categories = TsEngine.getInstance().getCategories();
 			
-			TsCategoryItem category = categories.getItemById(arg0[0]);
+			TsCategoryItem category = categories.getItemById(itemId[0]);
 			
 			result = TsEngine.getInstance().loadSerialList(category.value);
 			
@@ -173,7 +179,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 						Toast.LENGTH_LONG).show();
 			}
 			else {
-				backPressed = 0;
+				backPressCount = 0;
 				Intent intent = new Intent(MenuActivity.this, SerialListActivity.class);
 				startActivity(intent);								
 			}
@@ -181,17 +187,17 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 		}
     }	
 	
-    class AsyncExecutionMenu extends AsyncTask<Void, Void, Boolean> {
+    class RecentAddLoaderTask extends AsyncTask<Void, Void, Boolean> {
 
     	private RecentAddHelper recentAdd;
     	
-    	public AsyncExecutionMenu() {
+    	public RecentAddLoaderTask() {
     		recentAdd = new RecentAddHelper();
     	}
     	
 		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			boolean result = recentAdd.parseNewEpi();//tsEngine.initNewEpi();
+		protected Boolean doInBackground(Void... notUse) {
+			boolean result = recentAdd.parseNewEpi();
 			return result;
 		}
     	
@@ -204,7 +210,7 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 						Toast.LENGTH_LONG).show();
 			}
 			else {
-				backPressed = 0;
+				backPressCount = 0;
 				Intent intent = new Intent(MenuActivity.this, RecentAddActivity.class);
 				
 				ArrayList<TsRecentAddItem> recentAddItems = recentAdd.getAllItems();

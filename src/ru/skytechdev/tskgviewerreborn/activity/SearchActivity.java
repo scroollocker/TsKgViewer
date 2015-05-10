@@ -38,7 +38,7 @@ public class SearchActivity extends Activity {
 			    		EditText searchView = (EditText)findViewById(R.id.editText1);
 			    		ProgressBar = ProgressDialog.show(SearchActivity.this, "Загрузка...",
 		    					  "Пожалуйста ждите.... ", true, false);
-			    		new AsyncExecutionSearch().execute(searchView.getText().toString());
+			    		new SearchTask().execute(searchView.getText().toString());
 						return true;
 				}
 				return false;
@@ -47,7 +47,7 @@ public class SearchActivity extends Activity {
 		Button searchBtn = (Button)findViewById(R.id.button1); 
 		searchBtn.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View notUse) {
 				EditText searchView = (EditText)findViewById(R.id.editText1);
 				String searchText = searchView.getText().toString();
 				if (searchText.isEmpty()) {
@@ -55,7 +55,7 @@ public class SearchActivity extends Activity {
 				}
 				ProgressBar = ProgressDialog.show(SearchActivity.this, "Загрузка...",
   					  "Пожалуйста ждите.... ", true, false);
-				new AsyncExecutionSearch().execute(searchText);
+				new SearchTask().execute(searchText);
 			}
 		});
 		
@@ -63,11 +63,11 @@ public class SearchActivity extends Activity {
 		searchList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId,
+					long notUse3) {
 				ProgressBar =  ProgressDialog.show(SearchActivity.this, "Загрузка...",
 	  					  "Пожалуйста ждите.... ", true, false);
-				new AsyncExecutionSerial().execute(arg2);				
+				new SerialOpenTask().execute(itemId);				
 			}
 			
 		});
@@ -78,16 +78,16 @@ public class SearchActivity extends Activity {
 		return true;
 	}
 	
-	class AsyncExecutionSearch extends AsyncTask<String, Void, Boolean> {
+	class SearchTask extends AsyncTask<String, Void, Boolean> {
 		
-		public AsyncExecutionSearch() {
+		public SearchTask() {
 			searchHelper = new SearchHelper();
 		}
 		
 		@Override
-		protected Boolean doInBackground(String... arg0) {
+		protected Boolean doInBackground(String... searchText) {
 			boolean result = false;
-			int foundCount = searchHelper.search(arg0[0]);
+			int foundCount = searchHelper.search(searchText[0]);
 			if (foundCount > 0) {
 				result = true;
 			}
@@ -110,7 +110,7 @@ public class SearchActivity extends Activity {
 				String foundElements[];
 				foundElements = new String[foundCount];
 				for (int i = 0; i < foundCount; i++) {
-					foundElements[i] = searchHelper.getSearchItem(i).value;//tsEngine.getSearchedCaption(i);
+					foundElements[i] = searchHelper.getSearchItem(i).value;
 				}
 				foundList.setAdapter((ListAdapter) new ArrayAdapter<String>(SearchActivity.this,
 						   android.R.layout.simple_list_item_1, foundElements));								
@@ -119,12 +119,12 @@ public class SearchActivity extends Activity {
 		
     }    
 	
-	class AsyncExecutionSerial extends AsyncTask<Integer, Void, Boolean> {
+	class SerialOpenTask extends AsyncTask<Integer, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... itemId) {
 			boolean result = false;
-			int selId = arg0[0];
+			int selId = itemId[0];
 			String selUrl = searchHelper.getSearchItem(selId).url;
 
 			result = TsEngine.getInstance().loadSerialInfo(selUrl);

@@ -42,23 +42,23 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 		
 		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);
-		new AsyncImageLoader().execute();
+		new ImageLoaderTask().execute();
 	}
 		
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
 		ProgressBar = ProgressDialog.show(FavoritesActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);		
-		new AsyncExecution().execute(arg2);
+		new SerialOpenTask().execute(itemId);
 	}
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+    class SerialOpenTask extends AsyncTask<Integer, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... itemId) {
 			boolean result = false;
 			
-			String url = Favorites.getInstance().getItem(arg0[0]).url;
+			String url = Favorites.getInstance().getItem(itemId[0]).url;
 			
 			result = TsEngine.getInstance().loadSerialInfo(url);
 			
@@ -80,11 +80,11 @@ public class FavoritesActivity extends Activity implements OnItemClickListener {
 		}
     }	
 
-    class AsyncImageLoader extends AsyncTask<Void, Void, Void> {
+    class ImageLoaderTask extends AsyncTask<Void, Void, Void> {
     	TsBitmapItem[] items;
     	
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected Void doInBackground(Void... notUse) {
 			
 			int favCount = Favorites.getInstance().getCount();
 			

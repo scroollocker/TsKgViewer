@@ -2,7 +2,6 @@ package ru.skytechdev.tskgviewerreborn.activity;
 
 import ru.skytechdev.tskgviewerreborn.R;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
-import ru.skytechdev.tskgviewerreborn.serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 import android.os.AsyncTask;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,8 +20,8 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SerialListActivity extends Activity implements OnItemClickListener {
-
 	private ProgressDialog ProgressBar;
+	private final String LogTag = "SerialListActivity::LOG";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,11 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 		
 		int serialsCount = serials.getSerialsCount();
 		
+		if (serialsCount == 0) {
+			Log.d(LogTag,"ERR::serialsCount == 0");
+			return;
+		}
+		
 		String serialsElements[];
 		serialsElements = new String[serialsCount];
 		for (int i = 0; i < serialsCount; i++) {
@@ -42,8 +47,7 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 		}
 		
 		serialsItems.setAdapter((ListAdapter) new ArrayAdapter<String>(SerialListActivity.this,
-				   android.R.layout.simple_list_item_1, serialsElements));
-		
+				   android.R.layout.simple_list_item_1, serialsElements));		
 				
 	}
 
@@ -58,21 +62,21 @@ public class SerialListActivity extends Activity implements OnItemClickListener 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
 		ProgressBar = ProgressDialog.show(SerialListActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);		
-		new AsyncExecution().execute(arg2);
+		new SerialOpenTask().execute(itemId);
 	}
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+    class SerialOpenTask extends AsyncTask<Integer, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... itemId) {
 			boolean result = false;
 			
 			SerialsList serials = TsEngine.getInstance().getSerialList();
 			
-			TsSerialItem serial = serials.getSerialById(arg0[0]);
+			TsSerialItem serial = serials.getSerialById(itemId[0]);
 			
 			result = TsEngine.getInstance().loadSerialInfo(serial.url);
 			

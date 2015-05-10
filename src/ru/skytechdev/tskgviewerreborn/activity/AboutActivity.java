@@ -25,7 +25,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 		fb.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View notUsed) {
 				String developURL = "https://www.facebook.com/SkytechDev";
 				Intent intent = new Intent(Intent.ACTION_VIEW);
 				intent.setData(Uri.parse(developURL));
@@ -41,7 +41,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View notUsed) {
 		String developURL = "http://skytechdev.ru";
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(developURL));

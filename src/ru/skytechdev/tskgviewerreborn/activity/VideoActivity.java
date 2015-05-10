@@ -6,7 +6,6 @@ import ru.skytechdev.tskgviewerreborn.R;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import ru.skytechdev.tskgviewerreborn.utils.EpisodeHelper;
 import ru.skytechdev.tskgviewerreborn.utils.RecentEpisodes;
-import ru.skytechdev.tskgviewerreborn.utils.RecentSerials;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -25,13 +24,9 @@ public class VideoActivity extends Activity {
 	private VideoView video;
 	private ProgressDialog progress;
 	private int nowPlayed;
-	//private EpiSeen seenEpi = new EpiSeen();
-	
-	//private int currTryCount;
-	//private final int MAX_TRY_COUNT = 5;
+	private final String LogTag = "VideoActivity::LOG";
 	
 	private ArrayList<String> playlist = new ArrayList<String>();
-	private boolean grabType = true;
 	
 	private void showProgressBar() {
 		progress = new ProgressDialog(VideoActivity.this);
@@ -40,12 +35,11 @@ public class VideoActivity extends Activity {
 		new AsyncTask<Void, Void, String>() {
 			
 			@Override
-			protected String doInBackground(Void... arg0) {
+			protected String doInBackground(Void... notUse) {
 				String prevText = "";
 				if (nowPlayed < playlist.size()) {				
 					String url = playlist.get(nowPlayed);
-					//VideoUrlGenerator urlGen = new VideoUrlGenerator();
-					prevText = EpisodeHelper.getInstance().makeSerialPrev(url);//urlGen.makeSerialPrev(url);
+					prevText = EpisodeHelper.getInstance().makeSerialPrev(url);
 				}
 				return prevText;
 			}
@@ -67,7 +61,7 @@ public class VideoActivity extends Activity {
 		nowPlayed++;
 		showProgressBar();
 
-		new AsyncExecution().execute(nowPlayed);
+		new PlayerTask().execute(nowPlayed);
 	}
 	
 	@Override 
@@ -88,10 +82,17 @@ public class VideoActivity extends Activity {
 		
 		playlist = (ArrayList<String>)getIntent().getExtras().get(TsEngine.TS_PLAYLIST_EXTRA_STR);
 		
-		RecentEpisodes.getInstance().loadSerialAct(playlist.get(0));
+		if (playlist == null) {
+			Log.d(LogTag, "ERR::playlist == null");
+			return;
+		}
 		
-		//seenEpi.setContext(VideoActivity.this);
-		//seenEpi.loadSerialAct(playlist.get(0));
+		if (playlist.size() == 0) {
+			Log.d(LogTag, "ERR::playlist.size() == 0");
+			return;
+		}
+		
+		RecentEpisodes.getInstance().loadSerialAct(playlist.get(0));
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.activity_video);
@@ -137,21 +138,20 @@ public class VideoActivity extends Activity {
 		}
 	};
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+    class PlayerTask extends AsyncTask<Integer, Void, Boolean> {
 
     	private String url = "";
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... videoId) {
 			boolean result = false;
-			int id = arg0[0];
+			int id = videoId[0];
 			
 			int listSize = playlist.size();
 			if (listSize > id) {	
 				
 				RecentEpisodes.getInstance().addToList(playlist.get(id));
 				
-				//VideoUrlGenerator urlGen = new VideoUrlGenerator();
-				url = EpisodeHelper.getInstance().makeVideoUrl(playlist.get(id));//urlGen.makeVideoUrl(playlist.get(id));
+				url = EpisodeHelper.getInstance().makeVideoUrl(playlist.get(id));
 				result = true;
 			}
 			else {

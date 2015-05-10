@@ -44,14 +44,14 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onStart() {
     	super.onStart();
-    	new AsyncExecution().execute();
+    	new LoadCategoriesTask().execute();
     }
     
     
-    class AsyncExecution extends AsyncTask<Void, Void, Boolean> {
+    class LoadCategoriesTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Void... arg0) {
+		protected Boolean doInBackground(Void... notUsed) {
 			boolean result = false;
 						
 			Categories categoryies = TsEngine.getInstance().getCategories();
@@ -83,8 +83,8 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
 	@Override
-	public void onClick(View arg0) {
-		new AsyncExecution().execute();
+	public void onClick(View notUsed) {
+		new LoadCategoriesTask().execute();
 		btnRep.setVisibility(View.INVISIBLE);
 		tvNotify.setVisibility(View.VISIBLE);
 	}

@@ -7,10 +7,8 @@ import ru.skytechdev.tskgviewerreborn.adapters.TsRecentAddAdapter;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import ru.skytechdev.tskgviewerreborn.serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.structs.TsRecentAddItem;
-import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 import ru.skytechdev.tskgviewerreborn.utils.EpisodeHelper;
 import ru.skytechdev.tskgviewerreborn.utils.Favorites;
-import ru.skytechdev.tskgviewerreborn.utils.RecentAddHelper;
 import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,7 +19,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnLongClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,16 +30,19 @@ import android.widget.Toast;
 
 public class RecentAddActivity extends Activity implements OnItemClickListener, OnItemLongClickListener {
 	private ProgressDialog ProgressBar;	
+	
 	private final int MENU_ADD_FAVORITE = 2;	
 	private final int MENU_OPEN_SERIAL = 1;
+	
 	private int longPressedItem = 0;
+	private final String LogTag = "RecentAddActivity::LOG";
 	
 	private ArrayList<TsRecentAddItem> recentAddItems;
 	
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		longPressedItem = arg2;
+	public boolean onItemLongClick(AdapterView<?> notUse1, View notUse2, int itemId,
+			long notUse3) {
+		longPressedItem = itemId;
 		return false;
 	}
 	
@@ -90,8 +90,15 @@ public class RecentAddActivity extends Activity implements OnItemClickListener, 
 		
 		recentAddItems = (ArrayList<TsRecentAddItem>)getIntent().getExtras().get(TsEngine.TS_RECENTADD_EXTRA_STR);
 		
-		TsRecentAddItem[] items = new TsRecentAddItem[recentAddItems.size()];
-		for (int i = 0; i < recentAddItems.size(); i++) {
+		int recentCount = recentAddItems.size();
+		
+		if (recentCount == 0) {
+			Log.d(LogTag,"ERR::recentCount == 0");
+			return;
+		}
+		
+		TsRecentAddItem[] items = new TsRecentAddItem[recentCount];
+		for (int i = 0; i < recentCount; i++) {
 			items[i] = recentAddItems.get(i);
 			if (Favorites.getInstance().isExist(items[i].link)) {
 				items[i].isFavorite = true;
@@ -111,10 +118,10 @@ public class RecentAddActivity extends Activity implements OnItemClickListener, 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
 		ProgressBar = ProgressDialog.show(RecentAddActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);		
-		new AsyncExecution().execute(arg2);
+		new SerialOpenTask().execute(itemId);
 	}
 	
 	class SerialContextTask extends AsyncTask<Integer, Void, Integer> {
@@ -138,13 +145,12 @@ public class RecentAddActivity extends Activity implements OnItemClickListener, 
 			Log.d("SerialContextTask::url", url);			
 			
 			String serialName = TsUtils.parseSerialName(url);
+			
 			Log.d("SerialContextTask::serialName", serialName);
 			
 			if (!serialName.isEmpty()) {
 				String serialUrl = "http://www.ts.kg/show/"+serialName;
 				if (TsEngine.getInstance().loadSerialInfo(serialUrl)) {
-				//tsEngine.selectSerial(serialUrl);
-				//if (tsEngine.getSeasonCount() > 0) {
 					if (taskId == MENU_OPEN_SERIAL) {
 						result = MENU_OPEN_SERIAL;
 					}
@@ -171,7 +177,7 @@ public class RecentAddActivity extends Activity implements OnItemClickListener, 
 		protected void onPostExecute(Integer result) {
 			ProgressBar.dismiss();
 			if (result == 0) {
-				Toast.makeText(RecentAddActivity.this, "Что то пошло не так =(", Toast.LENGTH_LONG).show();
+				Toast.makeText(RecentAddActivity.this, "Что-то пошло не так =(", Toast.LENGTH_LONG).show();
 				return;
 			}
 			if (result == MENU_OPEN_SERIAL) {		
@@ -185,28 +191,26 @@ public class RecentAddActivity extends Activity implements OnItemClickListener, 
 		
 	}
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+    class SerialOpenTask extends AsyncTask<Integer, Void, Boolean> {
     	private int id;
     	private String newEpiUrl = "";
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... itemId) {
 			boolean result = false;
-			id = arg0[0];
+			id = itemId[0];
 			
 			String url = recentAddItems.get(id).link;
 						
 			if (TsEngine.getInstance().loadSerialInfo(url)) {
 				result = true;
 			}
-			else {
-				
-				Log.d("NewEpi", newEpiUrl);
+			else {								
 				if (!TsEngine.getInstance().useDefaultPlayer()) {
 					newEpiUrl = EpisodeHelper.getInstance().makeVideoUrl(recentAddItems.get(id).link);//urlGen.makeVideoUrl(newEpiUrl);
 				} else {
 					newEpiUrl = recentAddItems.get(id).link;
 				}
-				
+				Log.d("NewEpi", newEpiUrl);
 			}
 			
 			return result;

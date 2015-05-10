@@ -38,7 +38,7 @@ public class RecentSerialsActivity extends Activity implements OnItemClickListen
 		ProgressBar = ProgressDialog.show(RecentSerialsActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);
 		
-		new AsyncImageLoader().execute();	
+		new ImageLoaderTask().execute();	
 	}
 
 	@Override
@@ -47,28 +47,22 @@ public class RecentSerialsActivity extends Activity implements OnItemClickListen
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> notUse1, View notUse2, int itemId, long notUse3) {
 		ProgressBar = ProgressDialog.show(RecentSerialsActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);		
-		new AsyncExecution().execute(arg2);
+		new SerialOpenTask().execute(itemId);
 	}
 
-    class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
+    class SerialOpenTask extends AsyncTask<Integer, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... itemId) {
 			boolean result = false;
 			
-			String url = RecentSerials.getInstance().getUrl(arg0[0]);
-			
-			//tsEngine.selectSerial(url);
+			String url = RecentSerials.getInstance().getUrl(itemId[0]);
 			
 			result = TsEngine.getInstance().loadSerialInfo(url);
-			
-			//if (tsEngine.getSeasonCount() > 0) {
-			//	result = true;
-			//}
-			
+
 			return result;
 		}
     	
@@ -87,11 +81,11 @@ public class RecentSerialsActivity extends Activity implements OnItemClickListen
 		}
     }
     
-    class AsyncImageLoader extends AsyncTask<Void, Void, Void> {
+    class ImageLoaderTask extends AsyncTask<Void, Void, Void> {
     	TsBitmapItem[] items;
     	
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected Void doInBackground(Void... notUse) {
 			
 			int recentCount = RecentSerials.getInstance().getCount();
 					
