@@ -33,7 +33,7 @@ public class ImageManager {
 	    item.url = iUrl;
 	    this.context = context;
 	    
-	    new AsyncExecution(context).execute(item);
+	    new LoadImageTask(context).execute(item);
 	  }
 	  
 	   protected String parseFileName(String url) {
@@ -87,11 +87,11 @@ public class ImageManager {
 			return bitmap;
 		}
 	  
-	  public class AsyncExecution extends AsyncTask<TsImageItem, Void, Bitmap> {
+	  public class LoadImageTask extends AsyncTask<TsImageItem, Void, Bitmap> {
 		    protected ImageView img;
 		    protected Context context;
 		    
-		    public AsyncExecution(Context context) {
+		    public LoadImageTask(Context context) {
 		    	this.context = context;
 		    }
 		    
