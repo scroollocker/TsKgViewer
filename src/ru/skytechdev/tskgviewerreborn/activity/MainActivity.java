@@ -15,7 +15,15 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
-	public static boolean isExit = false;
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == RESULT_OK) {
+			finish();
+		}
+		
+	}
 	
 	private Button btnRep;
 	private TextView tvNotify;
@@ -29,7 +37,6 @@ public class MainActivity extends Activity implements OnClickListener {
         tvNotify = (TextView)findViewById(R.id.ls_caption);
 		btnRep.setVisibility(View.INVISIBLE);
 		btnRep.setOnClickListener(this);
-		isExit = false;
 		
 		TsEngine.getInstance().initEngine(MainActivity.this);
     }
@@ -37,10 +44,6 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onStart() {
     	super.onStart();
-    	if (isExit) {
-    		finish();
-    		return;
-    	}
     	new AsyncExecution().execute();
     }
     
@@ -74,7 +77,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 			else {
 				Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-				startActivity(intent);				
+				startActivityForResult(intent,0);			
 			}
 		}
     }

@@ -39,8 +39,8 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 			backPressed++;
 		}
 		else {
+			setResult(RESULT_OK);
 			finish();
-			MainActivity.isExit = true;
 		}
 	}	
 	
