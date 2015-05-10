@@ -2,9 +2,9 @@ package ru.skytechdev.tskgviewerreborn.utils;
 
 import java.util.ArrayList;
 
-import ru.skytechdev.tskgviewerreborn.Serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.categories.Categories;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 
 public class SearchHelper {

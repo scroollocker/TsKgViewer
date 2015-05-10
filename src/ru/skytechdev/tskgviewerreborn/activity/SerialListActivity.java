@@ -1,9 +1,9 @@
 package ru.skytechdev.tskgviewerreborn.activity;
 
 import ru.skytechdev.tskgviewerreborn.R;
-import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
-import ru.skytechdev.tskgviewerreborn.Serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.serial.SerialInfo;
+import ru.skytechdev.tskgviewerreborn.serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 import android.os.AsyncTask;
 import android.os.Bundle;

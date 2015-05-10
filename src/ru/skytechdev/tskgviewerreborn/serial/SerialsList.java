@@ -1,4 +1,4 @@
-package ru.skytechdev.tskgviewerreborn.Serial;
+package ru.skytechdev.tskgviewerreborn.serial;
 import java.util.ArrayList;
 
 import org.jsoup.nodes.Document;

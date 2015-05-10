@@ -3,9 +3,9 @@ package ru.skytechdev.tskgviewerreborn.activity;
 import java.util.ArrayList;
 
 import ru.skytechdev.tskgviewerreborn.R;
-import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.adapters.TsEpisodesAdapter;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.structs.TsRecentItem;
 import ru.skytechdev.tskgviewerreborn.utils.EpisodeHelper;
 import ru.skytechdev.tskgviewerreborn.utils.RecentEpisodes;

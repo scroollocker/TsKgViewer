@@ -1,8 +1,8 @@
 package ru.skytechdev.tskgviewerreborn.engine;
 
-import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
-import ru.skytechdev.tskgviewerreborn.Serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.categories.Categories;
+import ru.skytechdev.tskgviewerreborn.serial.SerialInfo;
+import ru.skytechdev.tskgviewerreborn.serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.utils.Favorites;
 import ru.skytechdev.tskgviewerreborn.utils.RecentEpisodes;
 import ru.skytechdev.tskgviewerreborn.utils.RecentSerials;
