@@ -1,5 +1,17 @@
-package ru.skytechdev.tskgviewerreborn;
+package ru.skytechdev.tskgviewerreborn.activity;
 
+import java.util.ArrayList;
+
+import ru.skytechdev.tskgviewerreborn.R;
+import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
+import ru.skytechdev.tskgviewerreborn.adapters.TsRecentAddAdapter;
+import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
+import ru.skytechdev.tskgviewerreborn.structs.TsRecentAddItem;
+import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
+import ru.skytechdev.tskgviewerreborn.utils.EpisodeHelper;
+import ru.skytechdev.tskgviewerreborn.utils.Favorites;
+import ru.skytechdev.tskgviewerreborn.utils.RecentAddHelper;
+import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,12 +31,13 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class NewEpiActivity extends Activity implements OnItemClickListener, OnItemLongClickListener {
-	public static TSEngine tsEngine = null;	
+public class RecentAddActivity extends Activity implements OnItemClickListener, OnItemLongClickListener {
 	private ProgressDialog ProgressBar;	
 	private final int MENU_ADD_FAVORITE = 2;	
 	private final int MENU_OPEN_SERIAL = 1;
 	private int longPressedItem = 0;
+	
+	private ArrayList<TsRecentAddItem> recentAddItems;
 	
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -49,7 +62,7 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		ProgressBar = ProgressDialog.show(NewEpiActivity.this, "Загрузка...",
+		ProgressBar = ProgressDialog.show(RecentAddActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);
 		switch(item.getItemId()) {
 			case MENU_OPEN_SERIAL: {
@@ -75,10 +88,12 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 		epiList.setOnItemLongClickListener(this);
 		registerForContextMenu(epiList);		
 		
-		TSNewEpisodesItem[] items = new TSNewEpisodesItem[tsEngine.getNewEpiCount()];
-		for (int i = 0; i < tsEngine.getNewEpiCount(); i++) {
-			items[i] = tsEngine.getNewEpiItem(i);
-			if (tsEngine.isInFavorites("", items[i].link, "")) {
+		recentAddItems = (ArrayList<TsRecentAddItem>)getIntent().getExtras().get(TsEngine.TS_RECENTADD_EXTRA_STR);
+		
+		TsRecentAddItem[] items = new TsRecentAddItem[recentAddItems.size()];
+		for (int i = 0; i < recentAddItems.size(); i++) {
+			items[i] = recentAddItems.get(i);
+			if (Favorites.getInstance().isExist(items[i].link)) {
 				items[i].isFavorite = true;
 			}
 			else {
@@ -86,7 +101,7 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 			}
 		}
 		
-		TSNewEpiAdapter adapter = new TSNewEpiAdapter(NewEpiActivity.this,items);
+		TsRecentAddAdapter adapter = new TsRecentAddAdapter(RecentAddActivity.this,items);
 		epiList.setAdapter(adapter);
 	}
 
@@ -97,7 +112,7 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ProgressBar = ProgressDialog.show(NewEpiActivity.this, "Загрузка...",
+		ProgressBar = ProgressDialog.show(RecentAddActivity.this, "Загрузка...",
 				  "Пожалуйста ждите.... ", true, false);		
 		new AsyncExecution().execute(arg2);
 	}
@@ -118,32 +133,30 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 			
 			Log.d("SerialContextTask::itemId", String.valueOf(itemId));
 			
-			String url = tsEngine.getNewEpiUrl(itemId);
+			String url = recentAddItems.get(itemId).link;
 			
 			Log.d("SerialContextTask::url", url);			
 			
-			String serialName = Favorites.parseSerialName(url);
+			String serialName = TsUtils.parseSerialName(url);
 			Log.d("SerialContextTask::serialName", serialName);
 			
 			if (!serialName.isEmpty()) {
 				String serialUrl = "http://www.ts.kg/show/"+serialName;
-				tsEngine.selectSerial(serialUrl);
-				if (tsEngine.getSeasonCount() > 0) {
+				if (TsEngine.getInstance().loadSerialInfo(serialUrl)) {
+				//tsEngine.selectSerial(serialUrl);
+				//if (tsEngine.getSeasonCount() > 0) {
 					if (taskId == MENU_OPEN_SERIAL) {
 						result = MENU_OPEN_SERIAL;
 					}
 					else if (taskId == MENU_ADD_FAVORITE){
-						TSItem serial = new TSItem();
 						
-						serial.value = tsEngine.getSerialCaption();
-						serial.url = tsEngine.getSerialUrl();
-						serial.imgurl = tsEngine.getSerialImg();
+						SerialInfo serial = TsEngine.getInstance().getSerialInfo();
 						
-						if (tsEngine.isInFavorites(serial.value,serial.url,serial.imgurl)) {
-							tsEngine.delFromFavorites(serial.value,serial.url,serial.imgurl);
+						if (Favorites.getInstance().isExist(serial.getUrl())) {
+							Favorites.getInstance().delete(serial.getCaption(), serial.getUrl(), serial.getImg());
 						}
 						else {
-							tsEngine.addToFavorites(serial.value,serial.url,serial.imgurl);
+							Favorites.getInstance().add(serial.getCaption(), serial.getUrl(), serial.getImg());
 						}
 						
 						result = MENU_ADD_FAVORITE;
@@ -158,16 +171,15 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 		protected void onPostExecute(Integer result) {
 			ProgressBar.dismiss();
 			if (result == 0) {
-				Toast.makeText(NewEpiActivity.this, "Что то пошло не так =(", Toast.LENGTH_LONG).show();
+				Toast.makeText(RecentAddActivity.this, "Что то пошло не так =(", Toast.LENGTH_LONG).show();
 				return;
 			}
-			if (result == MENU_OPEN_SERIAL) {				
-				SerialActivity.tsEngine = tsEngine;
-				Intent intent = new Intent(NewEpiActivity.this, SerialActivity.class);
+			if (result == MENU_OPEN_SERIAL) {		
+				Intent intent = new Intent(RecentAddActivity.this, SerialActivity.class);
 				startActivity(intent);	
 			}
 			else if (result == MENU_ADD_FAVORITE){				
-				Toast.makeText(NewEpiActivity.this, "Избранное обновлено", Toast.LENGTH_LONG).show();								
+				Toast.makeText(RecentAddActivity.this, "Избранное обновлено", Toast.LENGTH_LONG).show();								
 			}
 		}
 		
@@ -181,18 +193,18 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 			boolean result = false;
 			id = arg0[0];
 			
-			String url = tsEngine.getNewEpiUrl(id);
-			
-			tsEngine.selectSerial(url);
-			if (tsEngine.getSeasonCount() > 0) {
+			String url = recentAddItems.get(id).link;
+						
+			if (TsEngine.getInstance().loadSerialInfo(url)) {
 				result = true;
 			}
 			else {
-				newEpiUrl = tsEngine.getVideoUrl(tsEngine.getNewEpiUrl(id));
+				
 				Log.d("NewEpi", newEpiUrl);
-				if (!tsEngine.isDefaultPlayer()) {
-					VideoUrlGenerator urlGen = new VideoUrlGenerator();
-					newEpiUrl = urlGen.makeVideoUrl(newEpiUrl);
+				if (!TsEngine.getInstance().useDefaultPlayer()) {
+					newEpiUrl = EpisodeHelper.getInstance().makeVideoUrl(recentAddItems.get(id).link);//urlGen.makeVideoUrl(newEpiUrl);
+				} else {
+					newEpiUrl = recentAddItems.get(id).link;
 				}
 				
 			}
@@ -204,10 +216,13 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 		protected void onPostExecute(Boolean result) {
 			ProgressBar.dismiss();
 			if (!result) {				
-				if (tsEngine.isDefaultPlayer()) {
-					VideoActivity.playlist.clear();
-					VideoActivity.playlist.add(newEpiUrl);
-					Intent intent = new Intent(NewEpiActivity.this, VideoActivity.class);
+				if (TsEngine.getInstance().useDefaultPlayer()) {
+					
+					ArrayList<String> playlist = new ArrayList<String>();
+					playlist.add(newEpiUrl);
+					
+					Intent intent = new Intent(RecentAddActivity.this, VideoActivity.class);
+					intent.putExtra(TsEngine.TS_PLAYLIST_EXTRA_STR, playlist);
 					startActivity(intent);
 					
 				}
@@ -217,10 +232,8 @@ public class NewEpiActivity extends Activity implements OnItemClickListener, OnI
 					startActivity(intent);
 				}
 			}
-			else {
-				
-				SerialActivity.tsEngine = tsEngine;
-				Intent intent = new Intent(NewEpiActivity.this, SerialActivity.class);
+			else {				
+				Intent intent = new Intent(RecentAddActivity.this, SerialActivity.class);
 				startActivity(intent);								
 			}
 		}

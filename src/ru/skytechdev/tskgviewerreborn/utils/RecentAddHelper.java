@@ -1,13 +1,16 @@
-package ru.skytechdev.tskgviewerreborn;
+package ru.skytechdev.tskgviewerreborn.utils;
 
 import java.util.ArrayList;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-public class NewEpisodes {
-	private String baseurl = "http://www.ts.kg";
-	private ArrayList<TSNewEpisodesItem> epiItems = new ArrayList<TSNewEpisodesItem>();
+import ru.skytechdev.tskgviewerreborn.structs.TsRecentAddItem;
+import ru.skytechdev.tskgviewerreborn.utils.TsUtils;
+
+public class RecentAddHelper {
+	
+	private ArrayList<TsRecentAddItem> epiItems = new ArrayList<TsRecentAddItem>();
 	
 	public void clear() {
 		epiItems.clear();
@@ -17,19 +20,23 @@ public class NewEpisodes {
 		return epiItems.size();
 	}
 	
-	public TSNewEpisodesItem getEpiById(int id) {
+	public TsRecentAddItem getEpiById(int id) {
 		if (getEpiCount() == 0 || id >= getEpiCount() || id < 0) {
-			return new TSNewEpisodesItem();
+			return new TsRecentAddItem();
 		}
 		
 		return epiItems.get(id);
+	}
+	
+	public ArrayList<TsRecentAddItem> getAllItems() {
+		return epiItems;
 	}
 	
 	public boolean parseNewEpi() {
 		boolean result = false;
 		Document doc = null;
 		
-		doc = HttpWrapper.getHttpDoc(baseurl);
+		doc = HttpWrapper.getHttpDoc(TsUtils.getBasePath());
 		if (doc == null) {
 			return result;
 		}
@@ -55,10 +62,10 @@ public class NewEpisodes {
 			Elements epiItem = epiElements.get(i).select("a");
 			Elements comItem = epiElements.get(i).select("span");
 			if (epiItem.size() > 0) {
-				TSNewEpisodesItem epiNode = new TSNewEpisodesItem();
+				TsRecentAddItem epiNode = new TsRecentAddItem();
 				String link = epiItem.attr("href");
 				if (link.substring(0, 1).equals("/")) {
-					link = baseurl+link;
+					link = TsUtils.getBasePath()+link;
 				}
 				
 				epiNode.caption = epiItem.text();

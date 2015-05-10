@@ -30,11 +30,11 @@
             android:label="@string/title_activity_menu" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.SerialActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.SerialActivity"
             android:label="@string/title_activity_serial" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.EpisodActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.EpisodActivity"
             android:label="@string/title_activity_episod" >
         </activity>
         <activity
@@ -42,35 +42,31 @@
             android:label="@string/title_activity_serial_list" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.ListActivity"
-            android:label="@string/title_activity_list" >
-        </activity>
-        <activity
-            android:name="ru.skytechdev.tskgviewerreborn.NewEpiActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.RecentAddActivity"
             android:label="@string/title_activity_new_epi" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.LastSeenActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.RecentSerialsActivity"
             android:label="@string/title_activity_last_seen" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.SearchActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.AboutActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.FavoritesActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.FavoritesActivity"
             android:label="@string/title_activity_favorites" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.SettingsActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="ru.skytechdev.tskgviewerreborn.VideoActivity"
+            android:name="ru.skytechdev.tskgviewerreborn.activity.VideoActivity"
             android:label="@string/title_activity_video" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
     </application>

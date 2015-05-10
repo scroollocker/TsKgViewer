@@ -1,10 +1,10 @@
 package ru.skytechdev.tskgviewerreborn.activity;
 
-import ru.skytechdev.tskgviewerreborn.ImageManager;
 import ru.skytechdev.tskgviewerreborn.R;
 import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import ru.skytechdev.tskgviewerreborn.utils.Favorites;
+import ru.skytechdev.tskgviewerreborn.utils.ImageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;

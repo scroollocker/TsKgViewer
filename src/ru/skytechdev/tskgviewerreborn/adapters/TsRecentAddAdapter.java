@@ -1,5 +1,7 @@
-package ru.skytechdev.tskgviewerreborn;
+package ru.skytechdev.tskgviewerreborn.adapters;
 
+import ru.skytechdev.tskgviewerreborn.R;
+import ru.skytechdev.tskgviewerreborn.structs.TsRecentAddItem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TSNewEpiAdapter extends ArrayAdapter<TSNewEpisodesItem> {
-	private TSNewEpisodesItem[] items;
+public class TsRecentAddAdapter extends ArrayAdapter<TsRecentAddItem> {
+	private TsRecentAddItem[] items;
 	private Context context;
 	
-	public TSNewEpiAdapter(Context context, TSNewEpisodesItem[] objects) {
+	public TsRecentAddAdapter(Context context, TsRecentAddItem[] objects) {
 		super(context, R.layout.layout_newepiitem, objects);
 		items = objects;
 		this.context = context;

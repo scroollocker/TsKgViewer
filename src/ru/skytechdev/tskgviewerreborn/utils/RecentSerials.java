@@ -58,7 +58,7 @@ public class RecentSerials {
 		
 	}
 	
-	public void saveToSettings() {				
+	private void saveToSettings() {				
 		File seenFile = new File(context.getDir("data",Context.MODE_PRIVATE),"lastSeen");
 		
 		try {
@@ -125,6 +125,7 @@ public class RecentSerials {
 			tempList.add(seenList.get(i));
 		}
 		seenList = tempList;
+		saveToSettings();
 	}
 	
 }

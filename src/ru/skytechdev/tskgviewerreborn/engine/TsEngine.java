@@ -7,6 +7,8 @@ import ru.skytechdev.tskgviewerreborn.utils.Favorites;
 import ru.skytechdev.tskgviewerreborn.utils.RecentEpisodes;
 import ru.skytechdev.tskgviewerreborn.utils.RecentSerials;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class TsEngine {
 	private static TsEngine instance;
@@ -16,6 +18,8 @@ public class TsEngine {
 	private Context context;
 	
 	public static String TS_SEASON_EXTRA_STR = "season";
+	public static String TS_PLAYLIST_EXTRA_STR = "playlist";
+	public static String TS_RECENTADD_EXTRA_STR = "recent_add";
 	
 	private TsEngine() {}
 	
@@ -76,8 +80,14 @@ public class TsEngine {
 		result = serialInfo.loadSerialInfo(url);
 		if (result) {
 			RecentSerials.getInstance().add(serialInfo.getCaption(), serialInfo.getUrl(), serialInfo.getImg());
-			RecentSerials.getInstance().saveToSettings();
 		}
+		return result;
+	}
+	
+	public boolean useDefaultPlayer() {
+		boolean result = true;
+		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(context);
+		result = mySettings.getBoolean("pref_defplayer", true);
 		return result;
 	}
 }

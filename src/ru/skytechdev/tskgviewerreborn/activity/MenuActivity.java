@@ -1,11 +1,14 @@
 package ru.skytechdev.tskgviewerreborn.activity;
 
+import java.util.ArrayList;
+
 import ru.skytechdev.tskgviewerreborn.R;
-import ru.skytechdev.tskgviewerreborn.Serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.categories.Categories;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import ru.skytechdev.tskgviewerreborn.structs.TsCategoryItem;
+import ru.skytechdev.tskgviewerreborn.structs.TsRecentAddItem;
 import ru.skytechdev.tskgviewerreborn.utils.Favorites;
+import ru.skytechdev.tskgviewerreborn.utils.RecentAddHelper;
 import ru.skytechdev.tskgviewerreborn.utils.RecentSerials;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -116,18 +119,17 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 				return super.onOptionsItemSelected(item);
     		}      		
     		case R.id.search: {
-    			/*SearchActivity.tsEngine = tsEngine;
 				backPressed = 0;
 				Intent intent = new Intent(MenuActivity.this, SearchActivity.class);
 				startActivity(intent);
-				*/
+				
     			return super.onOptionsItemSelected(item);
     		}
     		case R.id.sett: {
-				/*backPressed = 0;
-				Intent intent = new Intent(tsEngine.getBaseContext(), SettingsActivity.class);
+				backPressed = 0;
+				Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
 				startActivity(intent);
-				*/
+				
     			return super.onOptionsItemSelected(item);
     		}    		
     		case R.id.about: {
@@ -181,27 +183,37 @@ public class MenuActivity extends Activity implements OnItemClickListener {
 	
     class AsyncExecutionMenu extends AsyncTask<Void, Void, Boolean> {
 
+    	private RecentAddHelper recentAdd;
+    	
+    	public AsyncExecutionMenu() {
+    		recentAdd = new RecentAddHelper();
+    	}
+    	
 		@Override
 		protected Boolean doInBackground(Void... arg0) {
-			//boolean result = tsEngine.initNewEpi();
-			return true;
+			boolean result = recentAdd.parseNewEpi();//tsEngine.initNewEpi();
+			return result;
 		}
     	
 		@Override
 		protected void onPostExecute(Boolean result) {
-			/*ProgressBar.dismiss();
+			ProgressBar.dismiss();
 			if (!result) {
 				Toast.makeText(getBaseContext(),
 						"Неудалось загрузить список новых эпизодов",
 						Toast.LENGTH_LONG).show();
 			}
 			else {
-				NewEpiActivity.tsEngine = tsEngine;
 				backPressed = 0;
-				Intent intent = new Intent(MenuActivity.this, NewEpiActivity.class);
+				Intent intent = new Intent(MenuActivity.this, RecentAddActivity.class);
+				
+				ArrayList<TsRecentAddItem> recentAddItems = recentAdd.getAllItems();
+				
+				intent.putExtra(TsEngine.TS_RECENTADD_EXTRA_STR, recentAddItems);
+				
 				startActivity(intent);								
 			}
-			*/
+			
 		}
     }        
     

@@ -68,7 +68,7 @@ public class RecentEpisodes {
 		} 
 	}
 	
-	public void saveSerialAct(String url) {
+	private void saveSerialAct(String url) {
 		String serial_file = TsUtils.parseSerialName(url);
 		
 		Log.d("SAVE: seen serial file name", serial_file);

@@ -7,6 +7,7 @@ import ru.skytechdev.tskgviewerreborn.Serial.SerialInfo;
 import ru.skytechdev.tskgviewerreborn.adapters.TsEpisodesAdapter;
 import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
 import ru.skytechdev.tskgviewerreborn.structs.TsRecentItem;
+import ru.skytechdev.tskgviewerreborn.utils.EpisodeHelper;
 import ru.skytechdev.tskgviewerreborn.utils.RecentEpisodes;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -77,14 +78,15 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 	
 	class AsyncExecution extends AsyncTask<Integer, Void, Boolean> {
 		private ArrayList<String> playlist = new ArrayList<String>(); 
-		
+		private TsEngine engine;
 		@Override
-		protected Boolean doInBackground(Integer... arg0) {
+		protected Boolean doInBackground(Integer... arg0) {			
 			boolean result = false;	
 			String url = "";
+			engine = TsEngine.getInstance();
 			int selectedPos = arg0[0];
 			SerialInfo serial = TsEngine.getInstance().getSerialInfo();
-			if (tsEngine.isDefaultPlayer()) {
+			if (engine.useDefaultPlayer()) {
 				playlist.clear();
 				
 				int epiCount = serial.getEpisodesCount(seasonId);
@@ -100,9 +102,9 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 				}
 			}
 			else {
-				url = serial.getEpisode(seasonId, selectedPos).url;
-				VideoUrlGenerator urlGen = new VideoUrlGenerator();
-				url = urlGen.makeVideoUrl(url);				
+				url = serial.getEpisode(seasonId, selectedPos).url;				
+				//VideoUrlGenerator urlGen = new VideoUrlGenerator();
+				url = EpisodeHelper.getInstance().makeVideoUrl(url);//urlGen.makeVideoUrl(url);				
 				if (!url.isEmpty()) {
 					playlist.add(url);
 					result = true;
@@ -120,9 +122,10 @@ public class EpisodActivity extends Activity implements OnItemClickListener {
 						Toast.LENGTH_LONG).show();
 				return;
 			}
-			if (tsEngine.isDefaultPlayer()) {
-				VideoActivity.playlist = playlist;
+			if (engine.useDefaultPlayer()) {
+				//VideoActivity.playlist = playlist;				
 				Intent intent = new Intent(EpisodActivity.this, VideoActivity.class);
+				intent.putExtra(TsEngine.TS_PLAYLIST_EXTRA_STR, playlist);
 				startActivity(intent);
 			}
 			else {

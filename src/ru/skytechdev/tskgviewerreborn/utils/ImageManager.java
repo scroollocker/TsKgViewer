@@ -17,7 +17,7 @@ public class ImageManager {
 	
 	  public Context context;	  
 	  
-	  private  ImageManager() {}
+	  public ImageManager() {}
 	  
 	  public ImageManager(Context context) {
 		  this.context = context;

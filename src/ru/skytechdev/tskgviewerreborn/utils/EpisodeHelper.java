@@ -1,4 +1,4 @@
-package ru.skytechdev.tskgviewerreborn;
+package ru.skytechdev.tskgviewerreborn.utils;
 
 import java.util.HashMap;
 
@@ -10,7 +10,19 @@ import org.jsoup.nodes.Element;
 
 import android.util.Log;
 
-public class VideoUrlGenerator {
+public class EpisodeHelper {
+	
+	private static EpisodeHelper instance;
+	
+	private EpisodeHelper() {}
+	
+	public static EpisodeHelper getInstance() {
+		if (instance == null) {
+			instance = new EpisodeHelper();
+		}
+		
+		return instance;
+	}
 	
 	private String getEpisodeId(String url) {
 		Document doc = HttpWrapper.getHttpDoc(url);
@@ -101,6 +113,7 @@ public class VideoUrlGenerator {
 			return "";
 		}
 		
+		/* TODO: make correctly url */
 		String defLink = url.replace("http://www.ts.kg/" , "http://data1.ts.kg/video/") + ".mp4";
 		
 		String link = getAjax(url);		
@@ -116,10 +129,6 @@ public class VideoUrlGenerator {
 		
 		return link;
 		
-	}
-	
-	public String getEpiID(String url) {
-		return getEpisodeId(url);
 	}
 	
 	public String makeSerialPrev(String url) {
