@@ -45,13 +45,9 @@ public class EpisodeHelper {
 		
 		if (id.isEmpty()) {
 			return result;
-		}
+		}		
 		
-		HashMap<String, String> postData = new HashMap<String, String>();
-		
-		postData.put("episode", id);
-		
-		Document doc = HttpWrapper.postHttpAjax("http://www.ts.kg/show/episode/episode.json", postData, url);
+		Document doc = HttpWrapper.getHttpAjax("http://www.ts.kg/show/episode/episode.json?episode="+id, url);
 		
 		if (doc == null) {
 			return result;
