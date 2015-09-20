@@ -77,6 +77,9 @@ public class RecentAddHelper {
 				
 				if (comItem.size() > 0) {
 					epiNode.comment = comItem.text();
+					if (epiNode.comment.equals("Новости")) {
+						continue;
+					}										
 				}
 				else {
 					epiNode.comment = "";

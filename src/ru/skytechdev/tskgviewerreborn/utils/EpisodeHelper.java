@@ -96,9 +96,7 @@ public class EpisodeHelper {
 			return result;
 		}
 		
-		HashMap<String,String> fileMap = (HashMap<String,String>)file;
-		
-		result = fileMap.get("mp4");
+		result = (String)file.get("url");
 		
 		return result;
 		
