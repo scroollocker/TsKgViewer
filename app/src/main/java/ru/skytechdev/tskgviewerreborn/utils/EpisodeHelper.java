@@ -89,14 +89,26 @@ public class EpisodeHelper {
 		if (dataResp == null) {
 			return result;
 		}
+
+		JSONObject video = (JSONObject)dataResp.get("video");
+
+		if (video == null) {
+			return result;
+		}
+
+		JSONObject files = (JSONObject)video.get("files");
+
+		if (files == null) {
+			return result;
+		}
+
+		JSONObject SD = (JSONObject)files.get("SD");
 		
-		JSONObject file = (JSONObject)dataResp.get("file");
-		
-		if (file == null) {
+		if (SD == null) {
 			return result;
 		}
 		
-		result = (String)file.get("url");
+		result = (String)SD.get("url");
 		
 		return result;
 		

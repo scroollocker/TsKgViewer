@@ -37,7 +37,7 @@ public class CategoryHelper {
 			.append(catId)
 			.append("&genre=")
 			.append(genre)
-			.append("&star=0&sort=")
+			.append("&star=0&sortby=")
 			.append(sortValue)
 			.append("&zero=0&year=0");		
 		

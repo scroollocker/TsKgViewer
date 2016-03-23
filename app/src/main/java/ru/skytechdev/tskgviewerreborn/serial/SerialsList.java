@@ -68,7 +68,7 @@ public class SerialsList {
 		if (doc == null) {
 			return result;
 		}
-			
+
 		if (getSerialsCount() > 0) {
 			serialList.clear();
 		}
@@ -79,7 +79,7 @@ public class SerialsList {
 		do {
 			Elements serialElements = doc.select("div.shows").select("a");
 			Elements imgElements = doc.select("div.shows").select("img");
-			Element next_page = doc.select("li.next").select("a").first();
+			Element next_page = doc.select("a.next-page").first();
 			if (serialElements.size() > 0) {
 				for (int j = 0; j < serialElements.size(); j++) {
 					String link = serialElements.get(j).attr("href");

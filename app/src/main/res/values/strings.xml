@@ -5,10 +5,10 @@
     <string name="action_settings">Настройки</string>
     <string name="loading_info">Пожалуйста ждите...</string>
     <string name="title_activity_menu">Выберите категорию</string>
-    <string name="title_activity_serial">Выбирите сезон</string>
-    <string name="title_activity_episod">Выбирите эпизод</string>
+    <string name="title_activity_serial">Выберите сезон</string>
+    <string name="title_activity_episod">Выберите эпизод</string>
     <string name="title_activity_serial_list">Выберите сериал</string>
-    <string name="title_activity_list">Выбирите сериал</string>
+    <string name="title_activity_list">Выберите сериал</string>
     <string name="title_activity_new_epi">Новые эпизоды</string>
     <string name="title_activity_last_seen">Недавно просмотренные</string>
     <string name="title_activity_search">Поиск сериала</string>

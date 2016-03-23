@@ -1,10 +1,15 @@
 package ru.skytechdev.tskgviewerreborn.utils;
 
+import android.util.Log;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 
-import ru.skytechdev.tskgviewerreborn.categories.Categories;
-import ru.skytechdev.tskgviewerreborn.engine.TsEngine;
-import ru.skytechdev.tskgviewerreborn.serial.SerialsList;
 import ru.skytechdev.tskgviewerreborn.structs.TsSerialItem;
 
 public class SearchHelper {
@@ -35,26 +40,42 @@ public class SearchHelper {
 		
 		text = text.trim();
 		text = text.toLowerCase();
-		Categories categories = TsEngine.getInstance().getCategories();
-		int catCount = categories.getItemCount();
-		
-		for (int i = 0; i < catCount; i++) {
-			if (!TsEngine.getInstance().loadSerialList(categories.getItemById(i).value)) {
-				break;
-			}
-			
-			SerialsList serialList = TsEngine.getInstance().getSerialList();
-			
-			if (serialList.getSerialsCount() > 0) {
-				for (int j = 0; j < serialList.getSerialsCount(); j++) {
-					TsSerialItem item = serialList.getSerialById(j);
-					if (item.value.toLowerCase().indexOf(text) != -1) {
-						found.add(item);
-					}
-				}
+
+		Document doc = HttpWrapper.getHttpDoc("http://www.ts.kg/show/search/data.json");
+
+		if (doc == null) {
+			Log.e("SearchHelper::search()","document empty");
+			return 0;
+		}
+
+		String jsonBody = doc.text();
+
+		JSONParser parser = new JSONParser();
+
+		JSONArray jsonArray = null;
+
+		try {
+			jsonArray = (JSONArray) parser.parse(jsonBody);
+		} catch (ParseException e) {
+			Log.e("SearchHelper::search()",e.getMessage());
+			jsonArray = null;
+		}
+
+		if (jsonArray == null) {
+			return 0;
+		}
+
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JSONObject obj = (JSONObject)jsonArray.get(i);
+			String title = (String)obj.get("title");
+			if (title.toLowerCase().indexOf(text) >= 0) {
+				TsSerialItem item = new TsSerialItem();
+				item.imgurl = "";
+				item.url = (String)obj.get("url");
+				item.value = title;
+				found.add(item);
 			}
 		}
-		
 		return getItemsFound();
 	}
 	
