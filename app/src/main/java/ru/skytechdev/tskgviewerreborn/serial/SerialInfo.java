@@ -123,6 +123,9 @@ public class SerialInfo {
 		
 		if (serialElement.size() > 0) {			
 			for (int i = 0; i < serialElement.size(); i++) {
+				if (serialElement.get(i).hasClass("clearfix")) {
+					continue;
+				}
 				String epiCaption;
 				Elements episodes = serialElement.get(i).select("a");
 				epiCaption = serialElement.get(i).select("h3").text();

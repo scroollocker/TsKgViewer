@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ts.kg-viewer-reborn.iml" filepath="$PROJECT_DIR$/ts.kg-viewer-reborn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ts.kg-viewer.iml" filepath="$PROJECT_DIR$/ts.kg-viewer.iml" />
     </modules>
   </component>
 </project>

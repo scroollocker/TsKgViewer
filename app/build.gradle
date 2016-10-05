@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 15
+    compileSdkVersion 14
     buildToolsVersion "23.0.2"
 
     defaultConfig {
@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
     compile files('libs/json-simple-1.1.1.jar')
     compile 'org.jsoup:jsoup:1.8.3'
 }
