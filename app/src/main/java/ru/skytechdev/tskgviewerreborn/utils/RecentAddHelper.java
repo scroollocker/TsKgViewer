@@ -45,7 +45,7 @@ public class RecentAddHelper {
 			epiItems.clear();
 		}
 		
-		Elements epiElements = doc.select(".news");
+		Elements epiElements = doc.select(".col-xs-4").select(".news");
 		
 		if (epiElements.size() == 0) {
 			return result;
@@ -54,13 +54,16 @@ public class RecentAddHelper {
 		String currDate = "";
 		
 		for (int i = 0; i < epiElements.size(); i++) {
+			/*
 			Elements dateItem = epiElements.get(i).select("h3");
 			if (dateItem.size() > 0) {
 				currDate = dateItem.text();
 				continue;
 			}
+			*/
 			Elements epiItem = epiElements.get(i).select("a");
-			Elements comItem = epiElements.get(i).select("span");
+			Elements comItem = epiElements.get(i).select("span.label");
+			Elements epiDetail = epiElements.get(i).select("small");
 			if (epiItem.size() > 0) {
 				TsRecentAddItem epiNode = new TsRecentAddItem();
 				String link = epiItem.attr("href");
@@ -69,6 +72,9 @@ public class RecentAddHelper {
 				}
 				
 				epiNode.caption = epiItem.text();
+				if (epiDetail.size() > 0) {
+					epiNode.caption += " ("+epiDetail.text()+")";
+				}
 				epiNode.link = link;
 				if (!epiNode.link.matches(".*ts.kg.*")) {
 					continue;
@@ -88,7 +94,7 @@ public class RecentAddHelper {
 			}			
 			
 		}
-		return  result = true;		
+		return true;
 	}
 	
 	
